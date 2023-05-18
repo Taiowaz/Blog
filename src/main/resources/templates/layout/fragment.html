@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <!-- 新 Bootstrap5 核心 CSS 文件 -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+
+        <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+        <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+
+        <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+
+
+    </head>
+
+    <body>
+        <div th:fragment="header" class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <button>BLOG</button>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">当前板块</div>
+                <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                    <form action="search">
+                        <input type="search" name="keyword">
+                        <button type="submit">搜索</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div th:fragment="lefter" class="container">
+            <div>
+                <button>首页</button>
+            </div>
+            <div>
+                <button>我的文章</button>
+            </div>
+            <div>
+                <button>文章类型</button>
+            </div>
+            <div>
+                <button>编辑文章</button>
+            </div>
+        </div>
+
+        <div th:fragment="righter" class="container">
+            <div>
+                <button>
+                    <div>
+                        <button id="avatar">
+                            <img th:src="" alt="这是头像">
+                        </button>
+                    </div>
+                    <div>用户名</div>
+                </button>
+            </div>
+            <div>
+                <button>用户列表</button>
+            </div>
+            <div>
+                <button>日志列表</button>
+            </div>
+
+            <div>
+                <button>12345</button>
+            </div>
+        </div>
+        <div th:fragment="footer">
+            <hr>
+            <div>2023/4 Designed By HDB</div>
+        </div>
+    </body>
+
+</html>

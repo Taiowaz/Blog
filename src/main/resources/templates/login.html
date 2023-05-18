@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+
+        <!-- 新 Bootstrap5 核心 CSS 文件 -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+
+        <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+        <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+
+        <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+        <script src="/static/js/login.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header row mb-5 mt-2 border">
+                <div class="col-sm-6 col-md-5 col-lg-5 col-xl-5 border">
+                    <button class="btn btn-dark w-50 h-100">BLOG</button>
+                </div>
+                <div class="col-sm-6 col-md-2 col-lg-2 col-xl-2 border border fs-2 fw-bold
+                                d-flex flex-row justify-content-center align-items-center">
+                    当前板块
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 border">
+                    <form action="/search" method="post" class="form-floating row border">
+                        <input type="search" name="keyword" class="form-control col" id="floatingInput"
+                               placeholder="博客标题/用户名/用户描述信息">
+                        <label for="floatingInput">博客标题/用户名/用户描述信息</label>
+                        <button type="submit" class="btn btn-dark col-md-3 ms-3">搜索</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="lefter col-sm-2 col-md-2 col-lg-2 col-xl-2 border">
+                    <button class="btn btn-dark mb-2 w-100">首&nbsp; &nbsp; &nbsp; &nbsp;页</button>
+                    <button class="btn btn-dark mb-2 w-100 ">我的文章</button>
+                    <button class="btn btn-dark mb-2 w-100">文章类型</button>
+                    <button class="btn btn-dark mb-2 w-100">编辑文章</button>
+                </div>
+                <div class="main col-sm-8 col-md-8 col-lg-8 col-xl-8 border">
+                    <div class="row justify-content-center fs-2 fw-bold mb-4">
+                        <button type="button" id="mode_shift_admin_regular_user" class="btn btn-secondary w-75"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-custom-class="custom-tooltip"
+                                data-bs-title="点击切换管理员/用户模式">
+                            用户登录/注册
+                        </button>
+                    </div>
+                    <div class="row border">
+                        <form id="form_login_register" method="post" class="border">
+                            <div class="row g-3 align-items-center justify-content-center mb-2">
+                                <div class="col-auto">
+                                    <label for="input_account" class="col-form-label">账户</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="text" id="input_account" name="account" class="form-control"
+                                           aria-labelledby="passwordHelpInline">
+                                </div>
+                                <div class="col-auto">
+                                    <span id="accountHelpInline" class="form-text">
+                                        Must be 2-10 characters long.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center justify-content-center mb-2">
+                                <div class="col-auto">
+                                    <label for="input_password" class="col-form-label">密码</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="password" id="input_password" name="password" class="form-control"
+                                           aria-labelledby="passwordHelpInline">
+                                </div>
+                                <div class="col-auto">
+                                    <span id="passwordHelpInline" class="form-text">
+                                        Must be 6-20 characters long.
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row border justify-content-center mt-3">
+                        <button type="button" id="register" class="btn btn-dark col-3 mx-auto">用户注册</button>
+                        <button type="button" id="login" class="btn btn-dark col-3 mx-auto">用户登录</button>
+                    </div>
+
+                    <div class="toast-container position-fixed bottom-0 end-0 p-3 ">
+                        <div id="liveToast" class="toast bg-danger-subtle" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <strong class="me-auto"></strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="righter col-sm-2 col-md-2 col-lg-2 col-xl-2 border">
+                    <button class="btn btn-dark mb-2 w-100">
+                        <div>
+                            <img src="" alt="这是头像" class="rounded-circle">
+                        </div>
+                        <div>用户名</div>
+                    </button>
+                    <button class="btn btn-dark mb-2 w-100">用户列表</button>
+                    <button class="btn btn-dark mb-2 w-100">12345</button>
+                    <button class="btn btn-dark mb-2 w-100">日志列表</button>
+                </div>
+            </div>
+
+            <div class="footer">
+                <hr>
+                <div>2023/4 Designed By HDB</div>
+            </div>
+        </div>
+    </body>
+</html>
