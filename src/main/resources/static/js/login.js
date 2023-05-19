@@ -1,7 +1,19 @@
 $(function () {
+    //todo 登录测试
     //设置管理员/用户标题切换提示
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+    //错误提示
+    function toast(header, body) {
+        $('.toast-header:first strong').text(header);
+        $('.toast-body:first').text(body);
+
+        const toastLiveExample = $('#liveToast');
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+        toastBootstrap.show();
+    }
+
 
     //点击切换管理员或用户模式
     $("#mode_shift_admin_regular_user").click(function () {
@@ -18,53 +30,92 @@ $(function () {
     })
 
 
+    //登录按钮点击事件
     $("#login").click(function () {
         let form = $('#form_login_register');
-        let account = $('#input_account').text();
-        let password = $('#input_password').text();
-
-        $('.toast-header:first strong').text('登录失败');
-
+        let account = $('#input_account').val();
+        let password = $('#input_password').val();
 
         if (vertify(account, password) == false) {
-            console.log(account);
-            console.log(password);
-            $('.toast-body:first').text('账号或密码长度不合理');
-            toast();
+            toast('登录失败', '账号或密码长度不合理');
+            return;
         }
 
-        //todo json字符串的构成
-        //todo 登录注册的完善
-        data = '{account:' + account + ', password:' + password + '}';
-        data1 = JSON.parse(data);
+        data = {"account": account, "password": password};
+        console.log(data);
 
-        console.log(data1)
-        
+        let url;
+        //判断是否是用户还是管理员
         if ($('#form_login_register').text() == '用户登录') {
-            $.ajax({
-                    type: 'post',
-                    url: '/loginRegularUser',
-                    contentType: 'json',
-                    data: data,
-                    success: function (res) {
-                        if (res == 'null') {
-                            $('.toast-body:first').text('账号或密码错误');
-                            toast();
-                        }
-                    }
-                }
-            )
+            url = '/loginRegularUser';
         } else {
-
+            url = '/loginAdmin';
         }
+
+        $.ajax({
+                type: 'post',
+                url: url,
+                contentType: 'json',
+                data: data,
+                success: loginRequestSuccess(res)
+            }
+        )
     })
 
-    //错误提示
-    function toast() {
-        const toastLiveExample = $('#liveToast');
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-        toastBootstrap.show();
+    //todo session保存登录信息
+    //登录请求成功函数
+    function loginRequestSuccess(res) {
+        if (res == 'null') {
+            toast('登录失败', '账号或密码错误');
+        } else {
+            toast('登录成功', '欢迎进入博客网站');
+            formatLoginRes(res);
+            //todo 跳转页面
+            $(location).attr('href', '/index.html');
+        }
     }
+
+    //处理登录请求成功结果函数
+    function formatLoginRes(res) {
+        res.forEach(function (user) {
+            $.session.set('avatarBase64', user.avatarBase64);
+            $.session.set('account', user.account);
+            $.session.set('avatarType', user.avatarType);
+        })
+    }
+
+    $("#register").click(function () {
+        let account = $('#input_account').val();
+        let password = $('#input_password').val();
+
+        if (vertify(account, password) == false) {
+            toast('注册失败', '账号或密码长度不合理');
+            return;
+        }
+
+        data = {"account": account, "password": password};
+        console.log(data);
+
+        $.ajax({
+                type: 'post',
+                url: '/registerRegularUser',
+                contentType: 'json',
+                data: data,
+                success: registerRequestSuccess(res)
+            }
+        )
+
+    })
+
+    //注册请求成功函数
+    function registerRequestSuccess(res) {
+        if (res == null) {
+            toast('注册失败', '用户已存在');
+            return;
+        }
+        toast('注册成功', '欢迎加入博客');
+    }
+
 
     //验证账号与密码是否合理
     function vertify(account, password) {
