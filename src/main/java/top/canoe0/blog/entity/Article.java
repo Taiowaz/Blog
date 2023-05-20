@@ -1,5 +1,7 @@
 package top.canoe0.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import top.canoe0.blog.entity.user.Admin;
 import top.canoe0.blog.entity.user.RegularUser;
@@ -10,12 +12,13 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "articleId")
 @Data
 @Entity
 public class Article {
     @Id
     @GeneratedValue
-    private int articleID;
+    private int articleId;
 
     @ManyToOne
     private RegularUser regularUser;
@@ -24,7 +27,7 @@ public class Article {
     private Admin admin;
 
     @OneToOne(mappedBy = "article")
-    private Like like;
+    private Favor favor;
 
     private String articleTitle;
 

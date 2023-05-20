@@ -1,5 +1,7 @@
 package top.canoe0.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import top.canoe0.blog.entity.user.Admin;
 import top.canoe0.blog.entity.user.RegularUser;
@@ -7,12 +9,13 @@ import top.canoe0.blog.entity.user.User;
 
 import javax.persistence.*;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "favorId")
 @Data
 @Entity
-public class Like {
+public class Favor {
     @GeneratedValue
     @Id
-    private int likeId;
+    private int favorId;
 
     private boolean flag;
 
@@ -24,6 +27,5 @@ public class Like {
 
     @OneToOne
     private Article article;
-
 
 }

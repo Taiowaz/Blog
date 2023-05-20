@@ -46,18 +46,22 @@ $(function () {
 
         let url;
         //判断是否是用户还是管理员
-        if ($('#form_login_register').text() == '用户登录') {
+        if ($('#mode_shift_admin_regular_user').text().trim() == '用户登录/注册') {
             url = '/loginRegularUser';
         } else {
             url = '/loginAdmin';
         }
+        console.log('url' + url);
 
         $.ajax({
                 type: 'post',
                 url: url,
-                contentType: 'json',
                 data: data,
-                success: loginRequestSuccess(res)
+                success: function (res) {
+                    console.log(res);
+                    loginRequestSuccess(res);
+                    // getSession();
+                }
             }
         )
     })
@@ -65,22 +69,34 @@ $(function () {
     //todo session保存登录信息
     //登录请求成功函数
     function loginRequestSuccess(res) {
-        if (res == 'null') {
+        if (res == null || res == '') {
             toast('登录失败', '账号或密码错误');
         } else {
             toast('登录成功', '欢迎进入博客网站');
-            formatLoginRes(res);
+
+            // formatLoginRes(res);
             //todo 跳转页面
-            $(location).attr('href', '/index.html');
+            // $(location).attr('href', '/index.html');
         }
     }
 
     //处理登录请求成功结果函数
-    function formatLoginRes(res) {
-        res.forEach(function (user) {
-            $.session.set('avatarBase64', user.avatarBase64);
-            $.session.set('account', user.account);
-            $.session.set('avatarType', user.avatarType);
+    // function formatLoginRes(res) {
+    //     res.forEach(function (user) {
+    //         $.session.set('avatarBase64', user.avatarBase64);
+    //         $.session.set('account', user.account);
+    //         $.session.set('avatarType', user.avatarType);
+    //     })
+    // }
+
+    //获取session
+    function getSession() {
+        $.ajax({
+            type: 'get',
+            url: '/getSession',
+            success: function (res) {
+                console.log(res);
+            }
         })
     }
 
@@ -98,10 +114,12 @@ $(function () {
 
         $.ajax({
                 type: 'post',
-                url: '/registerRegularUser',
-                contentType: 'json',
+                url: '/registerOrUpdateRegularUser',
                 data: data,
-                success: registerRequestSuccess(res)
+                success: function (res) {
+                    console.log(res);
+                    registerRequestSuccess(res)
+                }
             }
         )
 
@@ -109,7 +127,7 @@ $(function () {
 
     //注册请求成功函数
     function registerRequestSuccess(res) {
-        if (res == null) {
+        if (res == null || res == '') {
             toast('注册失败', '用户已存在');
             return;
         }

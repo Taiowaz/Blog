@@ -13,7 +13,7 @@ $(function () {
 
     function getUserInfo() {
         id = $("input[name='id']").val();
-        avator = $("input[name='avator']").val();
+        avatar = $("input[name='avatar']").val();
         account = $("input[name='account']").val();
         password = $("input[name='password']").val();
 
@@ -26,7 +26,7 @@ $(function () {
         registerTime = $("input[name='registerTime']").val();
         lastModifyTime = $("input[name='lastModifyTime']").val();
 
-        data = {"id": id, "avator": avator, "account": account, "password": password}
+        data = {"id": id, "avatar": avatar, "account": account, "password": password}
 
         // if (type == 'regular') {
             data.name = name;
