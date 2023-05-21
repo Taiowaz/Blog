@@ -78,7 +78,7 @@ public class UserService {
 
 
     //   登录管理员
-    public Admin loginAdmin(Admin admin) {
+    public Admin loginAdmin(Admin admin, HttpSession session) {
         Admin adminDB = findAdminByAccount(admin.getAccount());
         if (adminDB == null) {
             return null;
@@ -86,17 +86,17 @@ public class UserService {
 
         if (adminDB.getPassword().equals(admin.getPassword())) {
             //设置session
-//            this.setSession(session, String.valueOf(adminDB.getId()), adminDB.getAccount(),
-//                    adminDB.getAvatarBase64(), adminDB.getAvatarType(), "admin");
+            this.setSession(session, String.valueOf(adminDB.getId()), adminDB.getAccount(),
+                    adminDB.getAvatarBase64(), adminDB.getAvatarType(), "admin");
             LoginLog loginLog = new LoginLog();
-            loginLog.setAdmin(admin);
+            loginLog.setAdmin(adminDB);
             loginLog.setLoginStatus("登录成功");
             logService.saveLoginLog(loginLog);
             //成功登录返回数据库查询用户
             return adminDB;
         } else {
             LoginLog loginLog = new LoginLog();
-            loginLog.setAdmin(admin);
+            loginLog.setAdmin(adminDB);
             loginLog.setLoginStatus("登录失败");
             //登录失败情况下一定不要把数据库查询用户返回
             return admin;

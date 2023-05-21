@@ -9,7 +9,6 @@ import top.canoe0.blog.entity.user.User;
 
 import javax.persistence.*;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "favorId")
 @Data
 @Entity
 public class Favor {

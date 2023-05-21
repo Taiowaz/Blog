@@ -60,7 +60,7 @@ $(function () {
                 success: function (res) {
                     console.log(res);
                     loginRequestSuccess(res);
-                    // getSession();
+                    getSession();
                 }
             }
         )

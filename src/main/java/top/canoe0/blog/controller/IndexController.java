@@ -21,4 +21,9 @@ public class IndexController {
     public String loginRegister() {
         return "/login_register";
     }
+
+    @GetMapping("/articleType")
+    public String articleType() {
+        return "/article_type";
+    }
 }

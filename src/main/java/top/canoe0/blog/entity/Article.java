@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "articleId")
 @Data
 @Entity
 public class Article {
@@ -26,8 +25,6 @@ public class Article {
     @ManyToOne
     private Admin admin;
 
-    @OneToOne(mappedBy = "article")
-    private Favor favor;
 
     private String articleTitle;
 
@@ -35,10 +32,5 @@ public class Article {
     private LocalDateTime releaseTime;
     private LocalDateTime lastModifyTime;
 
-    @OneToMany(mappedBy = "article")
-    private Set<ArticleType> articleTypeSet = new HashSet<ArticleType>();
-
-    @OneToMany(mappedBy = "article")
-    private Set<Comment> commentSet = new HashSet<Comment>();
 
 }

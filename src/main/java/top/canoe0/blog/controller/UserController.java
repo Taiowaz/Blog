@@ -61,11 +61,11 @@ public class UserController {
     //    登录管理员用户
     @PostMapping("loginAdmin")
     @ResponseBody
-    public Admin loginAdmin(@RequestParam String account, @RequestParam String password) {
+    public Admin loginAdmin(@RequestParam String account, @RequestParam String password, HttpSession session) {
         Admin admin = new Admin();
         admin.setAccount(account);
         admin.setPassword(password);
-        return userService.loginAdmin(admin);
+        return userService.loginAdmin(admin, session);
     }
 
     @PostMapping("/loginRegularUser")

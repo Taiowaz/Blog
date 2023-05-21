@@ -15,12 +15,16 @@ public class ArticleTypeController {
     private ArticleTypeService articleTypeService;
 
     @GetMapping("/listAllArticleType")
-    public List<ArticleType> listAllArticleType(){
+    public List<ArticleType> listAllArticleType() {
         return articleTypeService.listAllArticleType();
     }
 
-    @PostMapping("addArticleType")
-    public ArticleType addArticleType(ArticleType articleType){
+    //todo 待改善路径分级
+    @PostMapping("/addArticleType")
+    public ArticleType addArticleType(String articleTypeName) {
+        System.out.println("articleTypeName = " + articleTypeName);
+        ArticleType articleType = new ArticleType();
+        articleType.setArticleTypeName(articleTypeName);
         return articleTypeService.saveArticleType(articleType);
     }
 }
