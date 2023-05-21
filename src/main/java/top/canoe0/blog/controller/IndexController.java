@@ -26,4 +26,10 @@ public class IndexController {
     public String articleType() {
         return "/article_type";
     }
+
+    @GetMapping("/userInfo")
+    public String userInfo() {
+        return "/user_info";
+    }
+
 }

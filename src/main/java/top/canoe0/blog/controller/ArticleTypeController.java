@@ -21,10 +21,20 @@ public class ArticleTypeController {
 
     //todo 待改善路径分级
     @PostMapping("/addArticleType")
-    public ArticleType addArticleType(String articleTypeName) {
+    public ArticleType addArticleType(int articleTypeId, String articleTypeName) {
         System.out.println("articleTypeName = " + articleTypeName);
         ArticleType articleType = new ArticleType();
+        if (articleTypeId != 0) {
+            articleType.setArticleTypeId(articleTypeId);
+        }
         articleType.setArticleTypeName(articleTypeName);
-        return articleTypeService.saveArticleType(articleType);
+        ArticleType articleTypeRes = articleTypeService.saveArticleType(articleType);
+        System.out.println("articleTypeRes = " + articleTypeRes);
+        return articleTypeRes;
+    }
+
+    @PostMapping("/deleteArticleTypeById")
+    public void deleteArticleTypeById(int articleTypeId) {
+        articleTypeService.deleteArticleTypeById(articleTypeId);
     }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
-<!--        todo 主页测试-->
+        <!--        todo 主页测试-->
         <meta charset="UTF-8">
         <title>Title</title>
         <!-- 新 Bootstrap5 核心 CSS 文件 -->
@@ -14,13 +14,14 @@
         <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
         <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 
-        <script src="/static/js/index.js"></script>
+        <script src="/js/common.js"></script>
+        <script src="/js/index.js"></script>
     </head>
     <body>
         <div class="container ">
             <div class="header row mb-5 mt-2 border">
                 <div class="col-sm-6 col-md-5 col-lg-5 col-xl-5 border">
-                    <button class="btn btn-dark w-50 h-100">BLOG</button>
+                    <button class="btn btn-dark w-50 h-100 index">BLOG</button>
                 </div>
                 <div class="col-sm-6 col-md-2 col-lg-2 col-xl-2 border border fs-2 fw-bold
                                 d-flex flex-row justify-content-center align-items-center">
@@ -38,35 +39,35 @@
 
             <div class="row">
                 <div class="lefter col-sm-2 col-md-2 col-lg-2 col-xl-2 border">
-                    <button class="btn btn-dark mb-2 w-100">首&nbsp; &nbsp; &nbsp; &nbsp;页</button>
-                    <button class="btn btn-dark mb-2 w-100 ">我的文章</button>
-                    <button class="btn btn-dark mb-2 w-100">文章类型</button>
-                    <button class="btn btn-dark mb-2 w-100">编辑文章</button>
+                    <button class="btn btn-dark mb-2 w-100 index">首&nbsp; &nbsp; &nbsp; &nbsp;页</button>
+                    <button class="btn btn-dark mb-2 w-100 my_article">我的文章</button>
+                    <button class="btn btn-dark mb-2 w-100 article_type">文章类型</button>
+                    <button class="btn btn-dark mb-2 w-100 edit_article">编辑文章</button>
                 </div>
                 <div class="main col-sm-8 col-md-8 col-lg-8 col-xl-8 border">
                     <div class="row text-bg-dark border mx-auto">
-                        <div id="article_list_user_avatar_index" class="border col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                        <div class="article_list_user_avatar_index border col-sm-3 col-md-3 col-lg-3 col-xl-3">
                             <img src="" alt="这是头像">
                         </div>
                         <div class="border col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                            <div id="article_list_user_account_index">这是账户名</div>
-                            <div id="article_list_release_time_index">这是发布时间</div>
+                            <div class="article_list_user_account_index">这是账户名</div>
+                            <div class="article_list_release_time_index">这是发布时间</div>
                         </div>
-                        <div id="article_list_title" class="border col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="article_list_title border col-sm-6 col-md-6 col-lg-6 col-xl-6">
                             这是博客题目
                         </div>
                     </div>
                 </div>
                 <div class="righter col-sm-2 col-md-2 col-lg-2 col-xl-2 border">
-                    <button class="btn btn-dark mb-2 w-100">
+                    <button class="btn btn-dark mb-2 w-100 user_info">
                         <div>
-                            <img src="" alt="这是头像" class="rounded-circle">
+                            <img src="" alt="这是头像" class="rounded-circle avatar">
                         </div>
                         <div>用户名</div>
                     </button>
-                    <button class="btn btn-dark mb-2 w-100">用户列表</button>
-                    <button class="btn btn-dark mb-2 w-100">12345</button>
-                    <button class="btn btn-dark mb-2 w-100">日志列表</button>
+                    <button class="btn btn-dark mb-2 w-100 user_list">用户列表</button>
+                    <button class="btn btn-dark mb-2 w-100 log_list">日志列表</button>
+                    <button class="btn btn-dark mb-2 w-100 ">空空空空</button>
                 </div>
             </div>
 

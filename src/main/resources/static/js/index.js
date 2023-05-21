@@ -45,14 +45,14 @@ $(function () {
     function bindArticleData(avatarBase64, avatarType, account, releaseTime, title) {
         let avatarSrc = 'data:' + avatarType + ";base64," + avatarBase64;
         let articleHtml = "<div class=\"row text-bg-dark border mx-auto\">\n" +
-            "                        <div class=\"article_list_user_avatar_index\" class=\"border col-sm-3 col-md-3 col-lg-3 col-xl-3\">\n" +
+            "                        <div class=\"article_list_user_avatar_index border col-sm-3 col-md-3 col-lg-3 col-xl-3\">\n" +
             "                            <img src=\"" + avatarSrc + "\" alt=\"这是头像\">\n" +
             "                        </div>\n" +
             "                        <div class=\"border col-sm-3 col-md-3 col-lg-3 col-xl-3\">\n" +
             "                            <div class=\"article_list_user_account_index\">" + account + "</div>\n" +
             "                            <div class=\"article_list_release_time_index\">" + releaseTime + "</div>\n" +
             "                        </div>\n" +
-            "                        <div class=\"article_list_title\" class=\"border col-sm-6 col-md-6 col-lg-6 col-xl-6\">\n" +
+            "                        <div class=\"article_list_title border col-sm-6 col-md-6 col-lg-6 col-xl-6\">\n" +
             title +
             "                        </div>\n" +
             "                    </div>"

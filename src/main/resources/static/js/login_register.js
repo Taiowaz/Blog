@@ -1,18 +1,7 @@
 $(function () {
-    //todo 登录测试
     //设置管理员/用户标题切换提示
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
-    //错误提示
-    function toast(header, body) {
-        $('.toast-header:first strong').text(header);
-        $('.toast-body:first').text(body);
-
-        const toastLiveExample = $('#liveToast');
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-        toastBootstrap.show();
-    }
 
 
     //点击切换管理员或用户模式
@@ -66,7 +55,9 @@ $(function () {
         )
     })
 
-    //todo session保存登录信息
+    //todo session 测试
+    //todo button链接的页面跳转
+
     //登录请求成功函数
     function loginRequestSuccess(res) {
         if (res == null || res == '') {
@@ -79,15 +70,6 @@ $(function () {
             // $(location).attr('href', '/index.html');
         }
     }
-
-    //处理登录请求成功结果函数
-    // function formatLoginRes(res) {
-    //     res.forEach(function (user) {
-    //         $.session.set('avatarBase64', user.avatarBase64);
-    //         $.session.set('account', user.account);
-    //         $.session.set('avatarType', user.avatarType);
-    //     })
-    // }
 
     //获取session
     function getSession() {
