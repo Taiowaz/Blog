@@ -9,19 +9,40 @@ function toast(header, body) {
     toastBootstrap.show();
 }
 
-//todo session 之间的信息传递
-//session
-function getSession() {
+//初始化加载已登录账户数据
+function initUserInfoBtn() {
     $.ajax({
         url: '/getSession',
-        type: 'post',
+        type: 'get',
         success: function (res) {
+            console.log(res);
+            if (res != null && res != '') {
+                if (res.avatarType !== null && res.avatarType !== ""
+                    && res.avatarType !== undefined && res.avatarType != "null") {
+                    console.log(true)
+                    $(".avatar").attr("src", 'data:' + res.avatarType + ";base64," + avatarBase64);
+                }
+                $(".account").text(res.account);
+            }
+        }
+    })
+}
+
+//userInfo按钮点击事件
+function btnUserInfoClickEvent() {
+    $.ajax({
+        url: '/getSession',
+        type: 'get',
+        success: function (res) {
+            console.log(res);
             if (res == null || res == '') {
                 window.location.href = "/loginRegister";
-            }
-            esle
-            {
-                $(".avatar").attr("src", 'data:' + res.avatarType + ";base64," + avatarBase64);
+            } else {
+                if (res.avatarType !== null && res.avatarType !== ""
+                    && res.avatarType !== undefined && res.avatarType !== "null") {
+                    console.log(true)
+                    $(".avatar").attr("src", 'data:' + res.avatarType + ";base64," + avatarBase64);
+                }
                 $(".account").text(res.account);
                 window.location.href = "/userInfo";
             }
@@ -30,6 +51,9 @@ function getSession() {
 }
 
 $(function () {
+
+    initUserInfoBtn();
+
     $(".index").click(function () {
         window.location.href = "/";
     });
@@ -42,10 +66,8 @@ $(function () {
     $(".edit_article").click(function () {
         window.location.href = "/editArticle";
     });
-    $(".user_info").click(function () {
+    $(".user_info").click(btnUserInfoClickEvent);
 
-        window.location.href = "/userInfo";
-    });
     $(".user_list").click(function () {
         window.location.href = "/userList";
     });

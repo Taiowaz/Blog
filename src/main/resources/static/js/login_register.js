@@ -47,41 +47,24 @@ $(function () {
                 url: url,
                 data: data,
                 success: function (res) {
-                    console.log(res);
                     loginRequestSuccess(res);
-                    getSession();
                 }
             }
         )
     })
 
-    //todo session 测试
-    //todo button链接的页面跳转
 
     //登录请求成功函数
     function loginRequestSuccess(res) {
         if (res == null || res == '') {
             toast('登录失败', '账号或密码错误');
         } else {
-            toast('登录成功', '欢迎进入博客网站');
-
-            // formatLoginRes(res);
-            //todo 跳转页面
-            // $(location).attr('href', '/index.html');
+            window.location.href = "/";
         }
     }
 
-    //获取session
-    function getSession() {
-        $.ajax({
-            type: 'get',
-            url: '/getSession',
-            success: function (res) {
-                console.log(res);
-            }
-        })
-    }
 
+    //注册点击事件
     $("#register").click(function () {
         let account = $('#input_account').val();
         let password = $('#input_password').val();
@@ -99,7 +82,6 @@ $(function () {
                 url: '/registerOrUpdateRegularUser',
                 data: data,
                 success: function (res) {
-                    console.log(res);
                     registerRequestSuccess(res)
                 }
             }
@@ -115,7 +97,6 @@ $(function () {
         }
         toast('注册成功', '欢迎加入博客');
     }
-
 
     //验证账号与密码是否合理
     function vertify(account, password) {

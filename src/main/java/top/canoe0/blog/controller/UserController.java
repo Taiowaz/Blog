@@ -12,7 +12,6 @@ import top.canoe0.blog.service.UserService;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-//todo session 的测试
 @RestController
 public class UserController {
     @Autowired
@@ -21,7 +20,6 @@ public class UserController {
     //session
     @GetMapping("/getSession")
     public JSONObject getSession(HttpSession session) throws Exception {
-        if (session == null) return null;
         JSONObject sessionJSON = userService.getSession(session);
         System.out.println("sessionJSON = " + sessionJSON);
         return sessionJSON;
@@ -37,14 +35,11 @@ public class UserController {
     //注册或更新普通用户
     @PostMapping("/registerOrUpdateRegularUser")
     public RegularUser registerOrUpdeateRegularUser(String account, String password) {
-        System.out.println("account = " + account);
-        System.out.println("password = " + password);
         RegularUser regularUser = new RegularUser();
         regularUser.setAccount(account);
         regularUser.setPassword(password);
-        RegularUser test = userService.saveRegularUser(regularUser);
-        System.out.println("test = " + test);
-        return test;
+        RegularUser regularUserRes = userService.saveRegularUser(regularUser);
+        return regularUserRes;
     }
 
     @PostMapping("/registerOrUpdateAdminUser")
@@ -56,7 +51,7 @@ public class UserController {
         return userService.saveAdmin(admin);
     }
 
-    //todo 登录与注册可优化
+    //todo 登录与注册代码可优化
 
     //    登录管理员用户
     @PostMapping("loginAdmin")

@@ -19,7 +19,7 @@ public class ArticleTypeController {
         return articleTypeService.listAllArticleType();
     }
 
-    //todo 待改善路径分级
+
     @PostMapping("/addArticleType")
     public ArticleType addArticleType(int articleTypeId, String articleTypeName) {
         System.out.println("articleTypeName = " + articleTypeName);

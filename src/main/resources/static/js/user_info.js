@@ -1,14 +1,11 @@
 $(function () {
 
-    // type = $.session.get('type');
-    // if (type == 'admin') {
-    //     $('.regular').hide();
-    // }
+    //todo 个人信息的绑定
 
     $('#save').bind('click', function () {
         data = getUserInfo();
         console.log(data);
-        
+
     });
 
     function getUserInfo() {
@@ -29,14 +26,14 @@ $(function () {
         data = {"id": id, "avatar": avatar, "account": account, "password": password}
 
         // if (type == 'regular') {
-            data.name = name;
-            data.gender = gender;
-            data.birthday = birthday;
-            data.phoneNumber = phoneNumber;
-            data.email = email;
-            data.detail = detail;
-            data.registerTime = registerTime;
-            data.lastModifyTime = lastModifyTime;
+        data.name = name;
+        data.gender = gender;
+        data.birthday = birthday;
+        data.phoneNumber = phoneNumber;
+        data.email = email;
+        data.detail = detail;
+        data.registerTime = registerTime;
+        data.lastModifyTime = lastModifyTime;
         // }
         return data;
     }

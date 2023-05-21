@@ -29,6 +29,10 @@ public class UserService {
         String avatarType = (String) session.getAttribute("avatarType");
         String userType = (String) session.getAttribute("userType");
 
+        if (id == null) {
+            return null;
+        }
+
         JSONObject sessionJSON = new JSONObject();
         sessionJSON.put("id", id);
         sessionJSON.put("account", account);
