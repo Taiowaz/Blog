@@ -19,6 +19,7 @@ $(function () {
     })
 
 
+    //todo 头像未加载判断是否修改
     //登录按钮点击事件
     $("#login").click(function () {
         let form = $('#form_login_register');
@@ -31,7 +32,7 @@ $(function () {
         }
 
         data = {"account": account, "password": password};
-        console.log(data);
+
 
         let url;
         //判断是否是用户还是管理员
@@ -40,7 +41,6 @@ $(function () {
         } else {
             url = '/loginAdmin';
         }
-        console.log('url' + url);
 
         $.ajax({
                 type: 'post',
@@ -75,11 +75,10 @@ $(function () {
         }
 
         data = {"account": account, "password": password};
-        console.log(data);
 
         $.ajax({
                 type: 'post',
-                url: '/registerOrUpdateRegularUser',
+                url: '/registerRegularUser',
                 data: data,
                 success: function (res) {
                     registerRequestSuccess(res)

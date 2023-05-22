@@ -22,14 +22,13 @@ public class ArticleTypeController {
 
     @PostMapping("/addArticleType")
     public ArticleType addArticleType(int articleTypeId, String articleTypeName) {
-        System.out.println("articleTypeName = " + articleTypeName);
         ArticleType articleType = new ArticleType();
         if (articleTypeId != 0) {
             articleType.setArticleTypeId(articleTypeId);
         }
         articleType.setArticleTypeName(articleTypeName);
         ArticleType articleTypeRes = articleTypeService.saveArticleType(articleType);
-        System.out.println("articleTypeRes = " + articleTypeRes);
+
         return articleTypeRes;
     }
 

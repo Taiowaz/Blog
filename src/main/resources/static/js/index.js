@@ -12,7 +12,7 @@ $(function () {
         url: '/listAllArticle',
         success: function (res) {
             formatArticleListRes(res);
-            bindArticleData(avatarBase64, avatarType, account, releaseTime, title);
+            bindArticleData(avatarUrl, account, releaseTime, title);
         }
     })
 
@@ -20,8 +20,7 @@ $(function () {
     function formatArticleListRes(res) {
         if (res == null) return;
         res.forEach(function (article) {
-            let avatarBase64;
-            let avatarType;
+            let avatarUrl;
             let account;
             let releaseTime;
             let title;
@@ -31,22 +30,19 @@ $(function () {
 
             if (article.admin != null) {
                 account = article.admin.account;
-                avatarBase64 = article.admin.avatarBase64;
-                avatarType = article.admin.avatarType;
+                avatarUrl = article.admin.avatarUrl;
             } else if (article.regularUser != null) {
                 account = article.regularUser.account;
-                avatarBase64 = article.regularUser.avatarBase64;
-                avatarType = article.regularUser.avatarType;
+                avatarUrl = article.regularUser.avatarUrl;
             }
         })
     }
 
     //绑定数据并加载视图
-    function bindArticleData(avatarBase64, avatarType, account, releaseTime, title) {
-        let avatarSrc = 'data:' + avatarType + ";base64," + avatarBase64;
+    function bindArticleData(avatarUrl, account, releaseTime, title) {
         let articleHtml = "<div class=\"row text-bg-dark border mx-auto\">\n" +
             "                        <div class=\"article_list_user_avatar_index border col-sm-3 col-md-3 col-lg-3 col-xl-3\">\n" +
-            "                            <img src=\"" + avatarSrc + "\" alt=\"这是头像\">\n" +
+            "                            <img src=\"" + avatarUrl + "\" alt=\"这是头像\">\n" +
             "                        </div>\n" +
             "                        <div class=\"border col-sm-3 col-md-3 col-lg-3 col-xl-3\">\n" +
             "                            <div class=\"article_list_user_account_index\">" + account + "</div>\n" +

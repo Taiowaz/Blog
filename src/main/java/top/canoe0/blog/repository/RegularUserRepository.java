@@ -5,4 +5,6 @@ import top.canoe0.blog.entity.user.RegularUser;
 
 public interface RegularUserRepository extends JpaRepository<RegularUser, Integer> {
     RegularUser findRegularUserByAccount(String account);
+
+    RegularUser findRegularUserById(int id);
 }

@@ -14,7 +14,7 @@
         <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 
         <script src="/js/common.js"></script>
-        <script src="/static/js/user_info.js"></script>
+        <script src="/js/user_info.js"></script>
     </head>
     <body>
         <div class="container ">
@@ -67,21 +67,10 @@
                             <input type="text" class="form-control mb-3 regular" name="name">
                         </div>
                         <div class="mb-3 regular">
-                            性别
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" value="male"
-                                       id="male">
-                                <label class="form-check-label" for="male">
-                                    男
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" value="female"
-                                       id="female">
-                                <label class="form-check-label" for="female">
-                                    女
-                                </label>
-                            </div>
+                            性别&nbsp; &nbsp;
+                            男 <input type="radio" id="male" name="gender" value="male" checked="checked">
+                            &nbsp; &nbsp;
+                            女 <input type="radio" id="female" name="gender" value="female">
                         </div>
                         <div class="regular">
                             出生日期
@@ -98,16 +87,17 @@
                         <div class="regular">
                             详细信息
                             <input type="text" class="form-control mb-3" name="detail"></div>
-                        <div class="regular">
+                        <div>
                             注册时间
                             <input type="datetime-local" class="form-control mb-3" name="registerTime" disabled>
                         </div>
-                        <div class="regular">
+                        <div >
                             最近一次修改时间
                             <input type="datetime-local" class="form-control mb-3" name="lastModifyTime" disabled>
                         </div>
-                        <div>
-                            <button type="button" id="save" class="btn btn-secondary w-100 mb-3">保存</button>
+                        <div class="mx-auto w-100 border d-flex flex-row justify-centent-center">
+                            <button type="button" id="save" class="btn btn-outline-success w-25  mx-auto">保存</button>
+                            <button type="button" id="logout" class="btn btn-outline-danger w-25  mx-auto">注销</button>
                         </div>
                     </form>
                 </div>
@@ -115,13 +105,13 @@
                 <div class="righter col-sm-2 col-md-2 col-lg-2 col-xl-2 border">
                     <button class="btn btn-dark mb-2 w-100 user_info">
                         <div>
-                            <img src="" alt="这是头像" class="rounded-circle avatar">
+                            <img src="" alt="这是头像" class="rounded avatar" style="height: 100px;width: 100px">
                         </div>
                         <div class="account">用户名</div>
                     </button>
                     <button class="btn btn-dark mb-2 w-100 user_list">用户列表</button>
                     <button class="btn btn-dark mb-2 w-100 log_list">日志列表</button>
-                    <button class="btn btn-dark mb-2 w-100" >空空空空</button>
+                    <button class="btn btn-dark mb-2 w-100">空空空空</button>
                 </div>
             </div>
 

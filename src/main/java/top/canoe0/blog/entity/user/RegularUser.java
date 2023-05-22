@@ -23,8 +23,6 @@ public class RegularUser extends User {
     private String phoneNumber;
     private String email;
     private String detail;
-    private LocalDateTime registerTime;
-    private LocalDateTime lastModifyTime;
 
     public RegularUser() {
     }

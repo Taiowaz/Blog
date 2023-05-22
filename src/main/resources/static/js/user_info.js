@@ -1,41 +1,166 @@
 $(function () {
+        var id;
+        var userType;
 
-    //todo 个人信息的绑定
+        var avatarUrl;
 
-    $('#save').bind('click', function () {
-        data = getUserInfo();
-        console.log(data);
+        idEle = $("input[name='id']");
+        avatarEle = $("input[name='avatar']");
+        accountEle = $("input[name='account']");
+        passwordEle = $("input[name='password']");
 
-    });
+        nameEle = $("input[name='name']");
+        birthdayEle = $("input[name='birthday']");
+        phoneNumberEle = $("input[name='phoneNumber']");
+        emailEle = $("input[name='email']");
+        detailEle = $("input[name='detail']");
+        registerTimeEle = $("input[name='registerTime']");
+        lastModifyTimeEle = $("input[name='lastModifyTime']");
 
-    function getUserInfo() {
-        id = $("input[name='id']").val();
-        avatar = $("input[name='avatar']").val();
-        account = $("input[name='account']").val();
-        password = $("input[name='password']").val();
+        initUserInfo();
+        initView();
 
-        name = $("input[name='name']").val();
-        gender = $("input[name='gender']").val();
-        birthday = $("input[name='birthday']").val();
-        phoneNumber = $("input[name='phoneNumber']").val();
-        email = $("input[name='email']").val();
-        detail = $("input[name='detail']").val();
-        registerTime = $("input[name='registerTime']").val();
-        lastModifyTime = $("input[name='lastModifyTime']").val();
 
-        data = {"id": id, "avatar": avatar, "account": account, "password": password}
+        //绑定监听事件，获取头像Base64编码构成的dataUrl
+        avatarEle.bind('change', function () {
+            var file = this.files[0];
+            var reader = new FileReader();
 
-        // if (type == 'regular') {
-        data.name = name;
-        data.gender = gender;
-        data.birthday = birthday;
-        data.phoneNumber = phoneNumber;
-        data.email = email;
-        data.detail = detail;
-        data.registerTime = registerTime;
-        data.lastModifyTime = lastModifyTime;
-        // }
-        return data;
+            reader.onload = function (res) {
+                avatarUrl = res.target.result;
+            }
+            reader.readAsDataURL(file);
+        })
+
+        function initUserInfo() {
+            id = getUrlParam("id");
+            userType = getUrlParam("userType");
+            getUserInfoFormServer();
+        }
+
+        function initView() {
+            console.log("userType  " + userType);
+            if (userType === 'admin') {
+                $('.regular').hide();
+            }
+        }
+
+        //获取当前用户信息
+        function getUserInfoFormServer() {
+            var url;
+            if (userType === 'regularUser') {
+                url = '/findRegularUserById';
+            } else {
+                url = '/findAdminById';
+            }
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: {"id": id},
+                success: function (res) {
+                    if (res !== null && res !== undefined && res !== "" && res !== "null") {
+                        bindUserInfo(res);
+                    }
+                }
+            })
+        }
+
+        //将用户信息绑定到页面
+        function bindUserInfo(res) {
+            idEle.val(res.id);
+            avatarEle.val(res.avatar);
+            accountEle.val(res.account);
+            passwordEle.val(res.password);
+            nameEle.val(res.name);
+            console.log("res  " + res.gender)
+            //todo 获取一直为男性
+            if (res.gender == 'male') {
+                $('#male').attr('checked', 'checked');
+            }
+            if (res.gender == 'female') {
+                $('#female').attr('checked', 'checked');
+            }
+            birthdayEle.val(res.birthday);
+            phoneNumberEle.val(res.phoneNumber);
+            emailEle.val(res.email);
+            detailEle.val(res.detail);
+            registerTimeEle.val(res.registerTime);
+            lastModifyTimeEle.val(res.lastModifyTime);
+        }
+
+
+        //保存个人信息事件
+        $('#save').bind('click', function () {
+            data = getUserInfoFromForm();
+            console.log("data   " + data.gender);
+            var url;
+            if (userType === 'regularUser') {
+                url = '/updateRegularUser';
+            } else {
+                url = '/updateAdmin';
+            }
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (res) {
+                    if (res !== null && res !== undefined && res !== "" && res !== "null") {
+                        btnUserInfoClickEvent();
+                    }
+                }
+            })
+        });
+
+        //注销
+        $("#logout").bind('click', function () {
+            $.ajax({
+                url: "/logout",
+                type: "get",
+                success: function () {
+                    window.location.href = "/";
+                }
+            })
+        })
+
+        //从表单中获取数据
+        function getUserInfoFromForm() {
+            //todo 存疑 不能去除，只用链接获取的id来修改用户信息
+            id = idEle.val();
+            avatar = avatarUrl;
+            account = accountEle.val();
+            password = passwordEle.val();
+
+            name = nameEle.val();
+            //由于会改变状态，所以需要随用随取
+            genderEle = $("input[name='gender']:checked");
+            gender = genderEle.val();
+            birthday = birthdayEle.val();
+            phoneNumber = phoneNumberEle.val();
+            email = emailEle.val();
+            detail = detailEle.val();
+
+            data = {
+                "id": id,
+                "avatarUrl": avatar,
+                "account": account,
+                "password": password,
+                "registerTime": "",
+                "lastModifyTime": ""
+            }
+
+            if (userType === 'regularUser') {
+                data.name = name;
+                data.gender = gender;
+                data.birthday = birthday;
+                data.phoneNumber = phoneNumber;
+                data.email = email;
+                data.detail = detail;
+            }
+            return data;
+        }
+
+
     }
-
-})
+)

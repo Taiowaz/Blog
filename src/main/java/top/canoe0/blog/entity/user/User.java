@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Data
@@ -18,9 +19,10 @@ public class User {
     @Length(min = 6, max = 20)
     protected String password;
     @Lob
-    private String avatarBase64;
+    protected String avatarUrl;
 
-    private String avatarType;
+    protected LocalDateTime registerTime;
+    protected LocalDateTime lastModifyTime;
 
     public User() {
     }

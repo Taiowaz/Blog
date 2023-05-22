@@ -2,11 +2,17 @@
 function toast(header, body) {
     $('.toast-header:first strong').text(header);
     $('.toast-body:first').text(body);
-    console.log(header);
-    console.log(body);
     const toastLiveExample = $('#liveToast');
     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
     toastBootstrap.show();
+}
+
+//获取链接所带的参数
+function getUrlParam(paramName) {
+    var url = window.location.href;
+    var params = new URL(url).searchParams;
+    var paramValue = params.get(paramName);
+    return paramValue;
 }
 
 //初始化加载已登录账户数据
@@ -15,12 +21,10 @@ function initUserInfoBtn() {
         url: '/getSession',
         type: 'get',
         success: function (res) {
-            console.log(res);
             if (res != null && res != '') {
-                if (res.avatarType !== null && res.avatarType !== ""
-                    && res.avatarType !== undefined && res.avatarType != "null") {
-                    console.log(true)
-                    $(".avatar").attr("src", 'data:' + res.avatarType + ";base64," + avatarBase64);
+                if (res.avatar !== null && res.avatarUrl !== ""
+                    && res.avatarUrl !== undefined && res.avatarUrl != "null") {
+                    $(".avatar").attr("src", res.avatarUrl);
                 }
                 $(".account").text(res.account);
             }
@@ -34,17 +38,10 @@ function btnUserInfoClickEvent() {
         url: '/getSession',
         type: 'get',
         success: function (res) {
-            console.log(res);
             if (res == null || res == '') {
                 window.location.href = "/loginRegister";
             } else {
-                if (res.avatarType !== null && res.avatarType !== ""
-                    && res.avatarType !== undefined && res.avatarType !== "null") {
-                    console.log(true)
-                    $(".avatar").attr("src", 'data:' + res.avatarType + ";base64," + avatarBase64);
-                }
-                $(".account").text(res.account);
-                window.location.href = "/userInfo";
+                window.location.href = "/userInfo?id=" + res.id + "&userType=" + res.userType;
             }
         }
     })
