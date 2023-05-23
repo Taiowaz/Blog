@@ -42,57 +42,51 @@ public class UserService {
         return sessionJSON;
     }
 
-    //todo 添加管理员用户
     //设置session
     public void setSession(HttpSession session, String id, String account, String avatarUrl, String userType) {
-        session.setAttribute("id", id);
-        session.setAttribute("account", account);
-        session.setAttribute("avatarUrl", avatarUrl);
-        session.setAttribute("userType", userType);
+        if (session != null) {
+            session.setAttribute("id", id);
+            session.setAttribute("account", account);
+            session.setAttribute("avatarUrl", avatarUrl);
+            session.setAttribute("userType", userType);
+        }
     }
 
     //添加或更新管理员用户(禁止用户与管理员重名)
     public Admin saveAdmin(HttpSession session, Admin admin) {
-        RegularUser regularUserDB = findRegularUserByAccount(admin.getAccount());
-        Admin adminDB = findAdminByAccount(admin.getAccount());
         //第一次注册
         if (admin.getId() == 0) {
-            //禁止用户与管理员重名
-            if (regularUserDB != null) return null;
-            if (adminDB != null) return null;
-
+            if (isAccountExist(admin.getAccount())) {
+                return null;
+            }
             admin.setRegisterTime(LocalDateTime.now());
         } else {
-            //todo 属性空值问题
+            //更新用户信息根据Id来更新
+            Admin adminDB = findAdminById(admin.getId());
             //由于加载用户信息时，不会把头像加载到页面，故需要判断传入是否非空，防止覆盖原头像
             if (admin.getAvatarUrl() == null || admin.getAvatarUrl() == "") {
-                admin.setAvatarUrl(regularUserDB.getAvatarUrl());
+                admin.setAvatarUrl(adminDB.getAvatarUrl());
             }
-            //todo 注册时间
             //该值不变，只是前端不传该值故设置
-//            admin.setRegisterTime(regularUserDB.getRegisterTime());
+            admin.setRegisterTime(adminDB.getRegisterTime());
             //更新信息时重新设置session
             setSession(session, String.valueOf(admin.getId()),
                     admin.getAccount(), admin.getAvatarUrl(), "admin");
-
         }
-//        admin.setLastModifyTime(LocalDateTime.now());
+        admin.setLastModifyTime(LocalDateTime.now());
         return adminRepository.save(admin);
     }
 
     //todo 这里有缺陷，未检查是否更改信息，只要传入就会改上次修改时间
     //添加或更新普通用户
     public RegularUser saveRegularUser(HttpSession session, RegularUser regularUser) {
-        RegularUser regularUserDB = findRegularUserByAccount(regularUser.getAccount());
-        Admin adminDB = findAdminByAccount(regularUser.getAccount());
-        //第一次注册
         if (regularUser.getId() == 0) {
-            //禁止用户与管理员重名
-            if (regularUserDB != null) return null;
-            if (adminDB != null) return null;
-
+            if (isAccountExist(regularUser.getAccount())) {
+                return null;
+            }
             regularUser.setRegisterTime(LocalDateTime.now());
         } else {
+            RegularUser regularUserDB = new RegularUser();
             //由于加载用户信息时，不会把头像加载到页面，故需要判断传入是否非空，防止覆盖原头像
             if (regularUser.getAvatarUrl() == null || regularUser.getAvatarUrl() == "") {
                 regularUser.setAvatarUrl(regularUserDB.getAvatarUrl());
@@ -107,6 +101,17 @@ public class UserService {
         regularUser.setLastModifyTime(LocalDateTime.now());
         return regularUserRepository.save(regularUser);
     }
+
+    //判断账户是否存在
+    public boolean isAccountExist(String account) {
+        RegularUser regularUserDB = findRegularUserByAccount(account);
+        Admin adminDB = findAdminByAccount(account);
+        if (regularUserDB != null || adminDB != null) {
+            return true;
+        }
+        return false;
+    }
+
 
     //显示所有普通用户
     public List<RegularUser> listAllRegularUser() {
@@ -161,7 +166,7 @@ public class UserService {
             loginLog.setAdmin(adminDB);
             loginLog.setLoginStatus("登录失败");
             //登录失败情况下一定不要把数据库查询用户返回
-            return admin;
+            return null;
         }
     }
 
@@ -174,9 +179,7 @@ public class UserService {
 
         if (regularUserDB.getPassword().equals(regularUser.getPassword())) {
             //设置session
-            if (session != null) {
-                this.setSession(session, String.valueOf(regularUserDB.getId()), regularUserDB.getAccount(), regularUserDB.getAvatarUrl(), "regularUser");
-            }
+            this.setSession(session, String.valueOf(regularUserDB.getId()), regularUserDB.getAccount(), regularUserDB.getAvatarUrl(), "regularUser");
             LoginLog loginLog = new LoginLog();
             loginLog.setRegularUser(regularUserDB);
             loginLog.setLoginStatus("登录成功");
@@ -189,5 +192,16 @@ public class UserService {
             return null;
         }
 
+    }
+
+    //删除管理员通过账户
+    public void deleteAdminById(int id) {
+        adminRepository.deleteAdminById(id);
+    }
+
+    //删除普通用户通过账户
+    public void deleteRegularUserById(int id) {
+        System.out.println("id = " + id);
+        regularUserRepository.deleteRegularUserById(id);
     }
 }

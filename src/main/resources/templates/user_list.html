@@ -12,9 +12,8 @@
         <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
         <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
         <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-
         <script src="/js/common.js"></script>
-        <script src="/js/user_info.js"></script>
+        <script src="/js/user_list.js"></script>
     </head>
     <body>
         <div class="container ">
@@ -45,61 +44,47 @@
                 </div>
 
                 <div class="main col-sm-8 col-md-8 col-lg-8 col-xl-8 border">
-                    <form method="post" class="row mx-auto">
-                        <div>
-                            <input type="hidden" class="form-control mb-3" name="id">
+                    <div class="mx-2 mb-2 border d-flex flex-row justify-centent-center">
+                        <button type="button" id="btn_regular_user_list" class="btn btn-secondary w-50  mx-auto">
+                            用户列表
+                        </button>
+                        <button type="button" id="btn_admin_list" class="btn btn-danger w-50  mx-auto">
+                            管理员列表
+                        </button>
+                    </div>
+                    <div class="row text-center border mx-2 mb-2" id="article_type_index">
+                        <div class="col-4 border">账户</div>
+                        <div class="col-4 border">密码</div>
+                        <div class="col-4 border">操作</div>
+                    </div>
+                    <div id="user_list">
+                        <div class="row text-center border mx-2 mb-2">
+                            <input type="text" name="id" class="w-100 form-c" hidden="hidden">
+                            <div class="col-4 border">
+                                <input type="text" name="account" class="w-100 form-control" disabled>
+                            </div>
+                            <div class="col-4 border">
+                                <input type="text" name="password" class="w-100 form-control">
+                            </div>
+                            <div class="col-4 border">
+                                <button class="btn btn-outline-success btn_save_user">保存</button>
+                                <button class="btn btn-outline-danger btn_delete_user">删除</button>
+                            </div>
                         </div>
-
-                        <div>
-                            头像
-                            <input type="file" accept="image/*" class="form-control mb-3" name="avatar">
+                    </div>
+                    <div id="add_admin">
+                        <div class="row text-center border mx-2 mb-2">
+                            <div class="col-4 border">
+                                <input type="text" name="admin_account" class="w-100 form-control">
+                            </div>
+                            <div class="col-4 border">
+                                <input type="text" name="admin_password" class="w-100 form-control">
+                            </div>
+                            <div class="col-4 border">
+                                <button class="btn btn-outline-success btn_add_admin w-50">添加</button>
+                            </div>
                         </div>
-
-                        <div>账号
-                            <input type="text" class="form-control mb-3" name="account" disabled>
-                        </div>
-
-                        <div>密码
-                            <input type="password" class="form-control mb-3" name="password">
-                        </div>
-
-                        <div class="regular">名字
-                            <input type="text" class="form-control mb-3 regular" name="name">
-                        </div>
-                        <div class="mb-3 regular">
-                            性别&nbsp; &nbsp;
-                            男 <input type="radio" id="male" name="gender" value="male" checked="checked">
-                            &nbsp; &nbsp;
-                            女 <input type="radio" id="female" name="gender" value="female">
-                        </div>
-                        <div class="regular">
-                            出生日期
-                            <input type="date" class="form-control mb-3" name="birthday">
-                        </div>
-                        <div class="regular">
-                            电话号码
-                            <input type="tel" class="form-control mb-3" name="phoneNumber">
-                        </div>
-                        <div class="regular">
-                            电子邮件
-                            <input type="email" class="form-control mb-3" name="email">
-                        </div>
-                        <div class="regular">
-                            详细信息
-                            <input type="text" class="form-control mb-3" name="detail"></div>
-                        <div>
-                            注册时间
-                            <input type="datetime-local" class="form-control mb-3" name="registerTime" disabled>
-                        </div>
-                        <div >
-                            最近一次修改时间
-                            <input type="datetime-local" class="form-control mb-3" name="lastModifyTime" disabled>
-                        </div>
-                        <div class="mx-auto w-100 border d-flex flex-row justify-centent-center">
-                            <button type="button" id="save" class="btn btn-outline-success w-25  mx-auto">保存</button>
-                            <button type="button" id="logout" class="btn btn-outline-danger w-25  mx-auto">注销</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="righter col-sm-2 col-md-2 col-lg-2 col-xl-2 border">

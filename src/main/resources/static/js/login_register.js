@@ -56,6 +56,7 @@ $(function () {
 
     //登录请求成功函数
     function loginRequestSuccess(res) {
+        console.log(res);
         if (res == null || res == '') {
             toast('登录失败', '账号或密码错误');
         } else {

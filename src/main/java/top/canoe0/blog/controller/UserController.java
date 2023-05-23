@@ -36,6 +36,11 @@ public class UserController {
         return userService.listAllRegularUser();
     }
 
+    @GetMapping("/listAllAdmin")
+    public List<Admin> listAllAdmin() {
+        return userService.listAllAdmin();
+    }
+
     //注册或更新普通用户
     @PostMapping("/registerRegularUser")
     public RegularUser registerRegularUser(HttpSession session, @RequestParam String account, @RequestParam String password) {
@@ -94,5 +99,32 @@ public class UserController {
     public Admin findAdminById(@RequestParam int id) {
         return userService.findAdminById(id);
     }
+
+    @PostMapping("/deleteRegularUserById")
+    public void deleteRegularUserById(@RequestParam int id) {
+        userService.deleteRegularUserById(id);
+    }
+
+    @PostMapping("/deleteAdminById")
+    public String deleteAdminById(@RequestParam int id, HttpSession session) {
+        if (session.getAttribute("id").equals(String.valueOf(id))) return "false";
+        userService.deleteAdminById(id);
+        return "true";
+    }
+
+    @PostMapping("/updateAdminPassword")
+    public Admin updateAdminPassword(@RequestParam int id, @RequestParam String password) {
+        Admin admin = userService.findAdminById(id);
+        admin.setPassword(password);
+        return userService.saveAdmin(null, admin);
+    }
+
+    @PostMapping("/updateRegularUserPassword")
+    public RegularUser updateRegularUserPassword(@RequestParam int id, @RequestParam String password) {
+        RegularUser regularUser = userService.findRegularUserById(id);
+        regularUser.setPassword(password);
+        return userService.saveRegularUser(null, regularUser);
+    }
+
 
 }

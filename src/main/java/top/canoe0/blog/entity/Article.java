@@ -19,10 +19,10 @@ public class Article {
     @GeneratedValue
     private int articleId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private RegularUser regularUser;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Admin admin;
 
 

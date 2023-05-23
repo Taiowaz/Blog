@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import top.canoe0.blog.entity.user.Admin;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -14,7 +15,7 @@ import javax.persistence.ManyToOne;
 public class OperateLog extends Log {
     private String operateType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Admin admin;
 
     public OperateLog() {

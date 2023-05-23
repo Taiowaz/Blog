@@ -47,6 +47,31 @@ function btnUserInfoClickEvent() {
     })
 }
 
+//用户列表或日志列表点击事件
+function btnUserListOrLogListClickEvent() {
+    var url;
+    if (this.className === "user_list") {
+        url = "/userList";
+    } else {
+        url = "/logList";
+    }
+    $.ajax({
+        url: '/getSession',
+        type: 'get',
+        success: function (res) {
+            if (res == null || res == '') {
+                window.location.href = url;
+            } else {
+                if (res.userType === 'admin') {
+                    window.location.href = "/userList";
+                } else {
+                    toast("警告", "您没有权限访问该页面！");
+                }
+            }
+        }
+    })
+}
+
 $(function () {
 
     initUserInfoBtn();
@@ -65,10 +90,7 @@ $(function () {
     });
     $(".user_info").click(btnUserInfoClickEvent);
 
-    $(".user_list").click(function () {
-        window.location.href = "/userList";
-    });
-    $(".log_list").click(function () {
-        window.location.href = "/logList";
-    })
+    $(".user_list").click(btnUserListOrLogListClickEvent);
+
+    $(".log_list").click(btnUserListOrLogListClickEvent)
 })

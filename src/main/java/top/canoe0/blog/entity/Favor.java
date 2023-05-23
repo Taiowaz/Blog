@@ -18,13 +18,13 @@ public class Favor {
 
     private boolean flag;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Admin admin;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private RegularUser regularUser;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Article article;
 
 }

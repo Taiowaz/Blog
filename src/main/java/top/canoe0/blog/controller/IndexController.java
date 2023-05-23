@@ -32,4 +32,8 @@ public class IndexController {
         return "/user_info";
     }
 
+    @GetMapping("/userList")
+    public String userList() {
+        return "/user_list";
+    }
 }

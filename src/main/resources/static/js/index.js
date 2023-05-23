@@ -1,11 +1,4 @@
 $(function () {
-    // //获取用户登录消息
-    // $.ajax({
-    //     type: 'post',
-    //     url: '/'
-    //
-    // })
-
     //发送请求获取博客列表
     $.ajax({
         type: 'post',
@@ -56,8 +49,4 @@ $(function () {
         $("#main").append(articleHtml);
     }
 
-    //头像点击事件
-    $("#avatar").click(function () {
-
-    })
 })
