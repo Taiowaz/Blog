@@ -28,7 +28,9 @@ public class Article {
 
     private String articleTitle;
 
+    @Lob
     private String articleContent;
+
     private LocalDateTime releaseTime;
     private LocalDateTime lastModifyTime;
 

@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
-        <!-- 新 Bootstrap5 核心 CSS 文件 -->
         <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
 
         <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
@@ -12,9 +11,9 @@
         <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
         <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
         <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-
+        <script src="/js/tinymce/js/tinymce/tinymce.min.js"></script>
+        <script src="/js/edit_article.js"></script>
         <script src="/js/common.js"></script>
-        <script src="/js/user_info.js"></script>
     </head>
     <body>
         <div class="container ">
@@ -45,61 +44,23 @@
                 </div>
 
                 <div class="main col-sm-8 col-md-8 col-lg-8 col-xl-8 border">
-                    <form method="post" class="row mx-auto">
-                        <div>
-                            <input type="hidden" class="form-control mb-3" name="id">
-                        </div>
-
-                        <div>
-                            头像
-                            <input type="file" accept="image/*" class="form-control mb-3" name="avatar">
-                        </div>
-
-                        <div>账号
-                            <input type="text" class="form-control mb-3" name="account" disabled>
-                        </div>
-
-                        <div>密码
-                            <input type="text" class="form-control mb-3" name="password">
-                        </div>
-
-                        <div class="regular">名字
-                            <input type="text" class="form-control mb-3 regular" name="name">
-                        </div>
-                        <div class="mb-3 regular">
-                            性别&nbsp; &nbsp;
-                            男 <input type="radio" id="male" name="gender" value="male" checked="checked">
-                            &nbsp; &nbsp;
-                            女 <input type="radio" id="female" name="gender" value="female">
-                        </div>
-                        <div class="regular">
-                            出生日期
-                            <input type="date" class="form-control mb-3" name="birthday">
-                        </div>
-                        <div class="regular">
-                            电话号码
-                            <input type="tel" class="form-control mb-3" name="phoneNumber">
-                        </div>
-                        <div class="regular">
-                            电子邮件
-                            <input type="email" class="form-control mb-3" name="email">
-                        </div>
-                        <div class="regular">
-                            详细信息
-                            <input type="text" class="form-control mb-3" name="detail"></div>
-                        <div>
-                            注册时间
-                            <input type="datetime-local" class="form-control mb-3" name="registerTime" disabled>
-                        </div>
-                        <div >
-                            最近一次修改时间
-                            <input type="datetime-local" class="form-control mb-3" name="lastModifyTime" disabled>
-                        </div>
-                        <div class="mx-auto w-100 border d-flex flex-row justify-centent-center">
-                            <button type="button" id="save" class="btn btn-outline-success w-25  mx-auto">保存</button>
-                            <button type="button" id="logout" class="btn btn-outline-danger w-25  mx-auto">注销</button>
-                        </div>
-                    </form>
+                    <div class="mb-3 mx-2">
+                        <input type="text" class="form-control" name="articleTitle" placeholder="标题">
+                    </div>
+                    <div class="row mb-3 mx-2">
+                        <textarea name="articleContent" id="articleContent"></textarea>
+                    </div>
+                    <div class="row mb-3 mx-2">
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="row mb-3 mx-2 d-flex justify-content-center">
+                        <button class="btn btn-outline-success btn_save_article w-50">保存</button>
+                    </div>
                 </div>
 
                 <div class="righter col-sm-2 col-md-2 col-lg-2 col-xl-2 border">

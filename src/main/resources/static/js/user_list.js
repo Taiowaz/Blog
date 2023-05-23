@@ -6,7 +6,6 @@ $(function () {
     function init() {
 
         var listType = getUrlParam("listType");
-        console.log(listType);
         if (listType != null) {
             presentListType = listType;
             if (listType === 'admin') {
@@ -41,7 +40,6 @@ $(function () {
     function bindRes(res) {
         var html = "";
         for (var i = 0; i < res.length; i++) {
-            console.log("res[i].id" + res[i].id);
             html +=
                 "     <div class=\"row text-center border mx-2 mb-2\">\n" +
                 "<input type=\"text\" name=\"id\" class=\"w-100 form-c\" hidden=\"hidden\" value=" + res[i].id + ">" +
@@ -81,11 +79,9 @@ $(function () {
 
     //保存用户按钮事件
     function btnSaveUserEvent() {
-        console.log(true)
         var userRowDiv = $(this).parent().parent();
         var id = userRowDiv.find("input[name='id']").val();
         var password = userRowDiv.find("input[name='password']").val();
-        console.log("id:" + id)
         if (presentListType === 'regularUser') {
             saveUser('/updateRegularUserPassword', id, password);
         } else {
@@ -96,11 +92,18 @@ $(function () {
     //删除用户按钮事件
     function btnDeleteUserEvent() {
         var userRowDiv = $(this).parent().parent();
+        var account = userRowDiv.find("input[name='account']").val();
+        var presentAccount = $(".account").text();
+
         var id = userRowDiv.find("input[name='id']").val();
         if (presentListType === 'regularUser') {
             deleteUser('/deleteRegularUserById', id);
         } else {
-            deleteUser('/deleteAdminById', id);
+            if (account === presentAccount) {
+                toast("删除失败", "你不能删除自己")
+            } else {
+                deleteUser('/deleteAdminById', id);
+            }
         }
     }
 
@@ -120,7 +123,6 @@ $(function () {
 
     //保存用户
     function saveUser(url, id, password) {
-        console.log("password:" + password)
         $.ajax({
             url: url,
             type: 'post',
@@ -133,14 +135,14 @@ $(function () {
             }
         })
     }
-//todo 添加有问题
+
     //添加管理员按钮事件
     function btnAddAdminEvent() {
         var addAdminRowDiv = $(this).parent().parent();
         var account = addAdminRowDiv.find("input[name='admin_account']").val();
         var password = addAdminRowDiv.find("input[name='admin_password']").val();
         if (account == null || account.length <= 0 || account.length > 10 ||
-            password == null || password.length <= 0 || password.length > 20) {
+            password == null || password.length < 6 || password.length > 20) {
             toast("添加失败", "账户或密码不合理");
         } else {
             addAdmin(account, password);
@@ -158,7 +160,11 @@ $(function () {
                     "password": password
                 },
                 success: function (res) {
-                    window.location.href = "/userList?listType=" + presentListType;
+                    if (res !== "" && res !== null) {
+                        window.location.href = "/userList?listType=" + presentListType;
+                    } else {
+                        toast("添加失败", "账户已存在")
+                    }
                 }
             }
         )

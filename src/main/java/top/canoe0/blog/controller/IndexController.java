@@ -36,4 +36,9 @@ public class IndexController {
     public String userList() {
         return "/user_list";
     }
+
+    @GetMapping("/editArticle")
+    public String editArticle(){
+        return "/edit_article";
+    }
 }

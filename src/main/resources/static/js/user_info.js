@@ -73,7 +73,6 @@ $(function () {
             passwordEle.val(res.password);
             nameEle.val(res.name);
             console.log("res  " + res.gender)
-            //todo 获取一直为男性
             if (res.gender == 'male') {
                 $('#male').attr('checked', 'checked');
             }
@@ -93,6 +92,10 @@ $(function () {
         $('#save').bind('click', function () {
             data = getUserInfoFromForm();
             console.log("data   " + data.gender);
+            if (password.length < 6 || password.length > 20) {
+                toast("保存失败", "密码长度小于6或大于20")
+                return;
+            }
             var url;
             if (userType === 'regularUser') {
                 url = '/updateRegularUser';

@@ -13,6 +13,9 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 
+//todo 普通用户头像保存有问题
+//todo 注册时间有问题
+
 @Service
 public class UserService {
     @Autowired
