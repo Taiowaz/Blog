@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findByArticleTitleLike(String keyword);
+
+    Article findByArticleId(int articleId);
 }

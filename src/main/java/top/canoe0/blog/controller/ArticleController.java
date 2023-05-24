@@ -23,4 +23,13 @@ public class ArticleController {
     public List<Article> listArticleByTitle(String keyword) {
         return listArticleByTitle(keyword);
     }
+
+    @PostMapping("/saveArticle")
+    public Article saveArticle(int userId, String userType,
+                               int articleId, String articleTitle, String articleContent,
+                               int articleTypeId) {
+        return articleService.saveArticle(userId, userType,
+                articleId, articleTitle, articleContent,
+                articleTypeId);
+    }
 }

@@ -88,8 +88,9 @@ public class UserService {
                 return null;
             }
             regularUser.setRegisterTime(LocalDateTime.now());
+            System.out.println("regularUser = " + regularUser.getRegisterTime());
         } else {
-            RegularUser regularUserDB = new RegularUser();
+            RegularUser regularUserDB = findRegularUserById(regularUser.getId());
             //由于加载用户信息时，不会把头像加载到页面，故需要判断传入是否非空，防止覆盖原头像
             if (regularUser.getAvatarUrl() == null || regularUser.getAvatarUrl() == "") {
                 regularUser.setAvatarUrl(regularUserDB.getAvatarUrl());
@@ -159,14 +160,16 @@ public class UserService {
             //设置session
             this.setSession(session, String.valueOf(adminDB.getId()), adminDB.getAccount(), adminDB.getAvatarUrl(), "admin");
             LoginLog loginLog = new LoginLog();
-            loginLog.setAdmin(adminDB);
+            loginLog.setUserId(adminDB.getId());
+            loginLog.setUserType("admin");
             loginLog.setLoginStatus("登录成功");
             logService.saveLoginLog(loginLog);
             //成功登录返回数据库查询用户
             return adminDB;
         } else {
             LoginLog loginLog = new LoginLog();
-            loginLog.setAdmin(adminDB);
+            loginLog.setUserId(adminDB.getId());
+            loginLog.setUserType("admin");
             loginLog.setLoginStatus("登录失败");
             //登录失败情况下一定不要把数据库查询用户返回
             return null;
@@ -184,13 +187,15 @@ public class UserService {
             //设置session
             this.setSession(session, String.valueOf(regularUserDB.getId()), regularUserDB.getAccount(), regularUserDB.getAvatarUrl(), "regularUser");
             LoginLog loginLog = new LoginLog();
-            loginLog.setRegularUser(regularUserDB);
+            loginLog.setUserId(regularUserDB.getId());
+            loginLog.setUserType("regularUser");
             loginLog.setLoginStatus("登录成功");
             logService.saveLoginLog(loginLog);
             return regularUserDB;
         } else {
             LoginLog loginLog = new LoginLog();
-            loginLog.setRegularUser(regularUserDB);
+            loginLog.setUserId(regularUserDB.getId());
+            loginLog.setUserType("regularUser");
             loginLog.setLoginStatus("登录失败");
             return null;
         }

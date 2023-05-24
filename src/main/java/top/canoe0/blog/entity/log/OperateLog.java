@@ -15,8 +15,7 @@ import javax.persistence.ManyToOne;
 public class OperateLog extends Log {
     private String operateType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Admin admin;
+    private int adminId;
 
     public OperateLog() {
     }

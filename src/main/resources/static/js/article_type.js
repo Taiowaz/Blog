@@ -1,39 +1,54 @@
 $(function () {
-        function init() {
-            loadArticleType();
+
+        getSession(callbackFunction);
+
+        //设置获取Session后的回调函数
+        function callbackFunction(res) {
+            id = res.id;
+            console.log("userId  " + id);
+            $("input[name='userId']").val(id);
+            console.log("userId  " + $("input[name='userId']").val());
+            loadArticleType(id);
+
         }
 
-        init();
-
         //加载文章类型
-        function loadArticleType() {
+        function loadArticleType(id) {
             $.ajax({
-                url: "/listAllArticleType",
-                type: "GET",
-                success: function (data) {
-                    var html = "";
-                    for (var i = 0; i < data.length; i++) {
-                        html += "<div class=\"row text-center border mx-2 mb-2\">\n" +
-                            "                        <div class=\"col-2 border\">\n" +
-                            "                            <input type=\"text\" name=\"articleTypeId\" class=\"w-100 form-control\"" +
-                            "                                   disabled value=" + data[i].articleTypeId + ">\n" +
-                            "                        </div>\n" +
-                            "                        <div class=\"col-4 border\">\n" +
-                            "                            <input type=\"text\" name=\"articleTypeName\" class=\"w-100 form-control\"" +
-                            "                                   value=" + data[i].articleTypeName + " >\n" +
-                            "                        </div>\n" +
-                            "                        <div class=\"col-6 border\">\n" +
-                            "                            <button class=\"btn btn-outline-success btn_save_article_type\">保存</button>\n" +
-                            "                            <button class=\"btn btn-outline-danger btn_delete_article_type\">删除</button>\n" +
-                            "                        </div>\n" +
-                            "                    </div>"
+                url: "/listArticleTypeByUserId",
+                type: "post",
+                data: {"userId": id},
+                success: function (res) {
+                    if (res !== "") {
+                        bindArticleTypeData(res);
                     }
-                    $("#article_type_index").after(html);
-                    //对加载视图绑定button事件
-                    $(".btn_save_article_type").click(btnSaveClickEvent);
-                    $(".btn_delete_article_type").click(btnDeleteClickEvent);
                 }
             })
+        }
+
+        //绑定数据到视图中
+        function bindArticleTypeData(res) {
+            var html = "";
+            for (var i = 0; i < res.length; i++) {
+                html += "<div class=\"row text-center border mx-2 mb-2\">\n" +
+                    "                        <div class=\"col-2 border\">\n" +
+                    "                            <input type=\"text\" name=\"articleTypeId\" class=\"w-100 form-control\"" +
+                    "                                   disabled value=" + res[i].articleTypeId + ">\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"col-4 border\">\n" +
+                    "                            <input type=\"text\" name=\"articleTypeName\" class=\"w-100 form-control\"" +
+                    "                                   value=" + res[i].articleTypeName + " >\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"col-6 border\">\n" +
+                    "                            <button class=\"btn btn-outline-success btn_save_article_type\">保存</button>\n" +
+                    "                            <button class=\"btn btn-outline-danger btn_delete_article_type\">删除</button>\n" +
+                    "                        </div>\n" +
+                    "                    </div>"
+            }
+            $("#article_type_index").after(html);
+            //对加载视图绑定button事件
+            $(".btn_save_article_type").click(btnSaveClickEvent);
+            $(".btn_delete_article_type").click(btnDeleteClickEvent);
         }
 
         //添加文章类型按钮点击事件
@@ -43,8 +58,9 @@ $(function () {
                 toast('添加失败', '文章类型长度不合理');
                 return;
             }
+            var userId = $("input[name='userId']").val();
 
-            sendUpdateOrAddArticleTypeRequest(0, articleTypeName, '添加失败', '文章类型已存在');
+            sendUpdateOrAddArticleTypeRequest(userId, 0, articleTypeName, '添加失败', '文章类型已存在');
         })
 
 
@@ -52,7 +68,7 @@ $(function () {
         function btnSaveClickEvent() {
             //找到每行的起始div
             var norDiv = $(this).parent().parent();
-
+            var userId = $("input[name='userId']").val();
             var articleTypeId = norDiv.find("input[name='articleTypeId']").val();
             var articleTypeName = norDiv.find("input[name='articleTypeName']").val();
 
@@ -62,7 +78,7 @@ $(function () {
                 return;
             }
 
-            sendUpdateOrAddArticleTypeRequest(articleTypeId, articleTypeName, '保存失败', '文章类型已存在');
+            sendUpdateOrAddArticleTypeRequest(userId, articleTypeId, articleTypeName, '保存失败', '文章类型已存在');
         }
 
         //删除文章类型按钮点击事件
@@ -77,20 +93,22 @@ $(function () {
                     type: "POST",
                     data: {"articleTypeId": articleTypeId},
                     success: function (res) {
+                        if (res===null||res===""){
+                            toast("删除失败","文章类型使用中")
+                        }
                         window.location.href = "/articleType";
                     }
                 }
             )
-
-
         }
 
         //发送更新或添加文章类型请求
-        function sendUpdateOrAddArticleTypeRequest(articleTypeId, articleTypeName, header, body) {
+        function sendUpdateOrAddArticleTypeRequest(userId, articleTypeId, articleTypeName, header, body) {
+            console.log(userId)
             $.ajax({
                 url: "/addArticleType",
                 type: "POST",
-                data: {"articleTypeId": articleTypeId, "articleTypeName": articleTypeName},
+                data: {"userId": userId, "articleTypeId": articleTypeId, "articleTypeName": articleTypeName},
                 success: function (res) {
                     if (res == null || res == "") {
                         toast(header, body);

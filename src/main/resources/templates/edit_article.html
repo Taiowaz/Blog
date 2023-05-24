@@ -44,6 +44,9 @@
                 </div>
 
                 <div class="main col-sm-8 col-md-8 col-lg-8 col-xl-8 border">
+                    <input type="text" name="userId" disabled hidden="hidden">
+                    <input type="text" name="userType" disabled hidden="hidden">
+                    <input type="text" name="articleId" disabled hidden="hidden">
                     <div class="mb-3 mx-2">
                         <input type="text" class="form-control" name="articleTitle" placeholder="标题">
                     </div>
@@ -51,7 +54,8 @@
                         <textarea name="articleContent" id="articleContent"></textarea>
                     </div>
                     <div class="row mb-3 mx-2">
-                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                        <select class="form-select form-select-lg mb-3 sel_article_Type"
+                                aria-label=".form-select-lg example">
                             <option selected>Open this select menu</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>

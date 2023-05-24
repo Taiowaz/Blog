@@ -28,4 +28,15 @@ public class ArticleTypeService {
     public void deleteArticleTypeById(int articleTypeId) {
         articleTypeRepository.deleteById(articleTypeId);
     }
+
+
+    //根据用户ID查找文章类型
+    public List<ArticleType> findAllArticleTypeByUserId(int userId) {
+        return articleTypeRepository.findArticleTypesByUserId(userId);
+    }
+
+    //根据Id查找文章类型
+    public ArticleType findAllArticleTypeById(int articleTypeId) {
+        return articleTypeRepository.findArticleTypeByArticleId(articleTypeId);
+    }
 }

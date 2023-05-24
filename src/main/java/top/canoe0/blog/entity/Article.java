@@ -19,11 +19,9 @@ public class Article {
     @GeneratedValue
     private int articleId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private RegularUser regularUser;
+    private int userId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Admin admin;
+    private String userType;
 
 
     private String articleTitle;

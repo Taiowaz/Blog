@@ -7,6 +7,20 @@ function toast(header, body) {
     toastBootstrap.show();
 }
 
+function getSession(callbackFunction) {
+    $.ajax({
+        url: '/getSession',
+        type: 'get',
+        success: function (res) {
+            if (res === "" || res === null || res === undefined) {
+                window.location.href = "/loginRegister";
+            } else {
+                callbackFunction(res);
+            }
+        }
+    })
+}
+
 //获取链接所带的参数
 function getUrlParam(paramName) {
     var url = window.location.href;
