@@ -12,8 +12,8 @@ $(function () {
 function getArticleTypeCallback(res) {
     id = res.id;
     console.log("res.id " + id);
-    $("inpit[name='userId']").val(res.id);
-    $("inpit[name='userType']").val(res.userType);
+    $("input[name='userId']").val(res.id);
+    $("input[name='userType']").val(res.userType);
     $.ajax({
         url: "/listArticleTypeByUserId",
         data: {"userId": id},
@@ -36,9 +36,9 @@ function bindArticleTypeData(res) {
 
 //保存按钮事件
 function btnSaveArticleEvent() {
-    var userId = $("inpit[name='userId']").val();
-    var userType = $("inpit[name='userType']").val();
-    var articleId = $("inpit[name='articleId']").val();
+    var userId = $("input[name='userId']").val();
+    var userType = $("input[name='userType']").val();
+    var articleId = $("input[name='articleId']").val();
     if (articleId === "" || articleId == null) {
         articleId = 0;
     }

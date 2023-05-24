@@ -19,8 +19,6 @@ public class Comment {
 
     private String commentContent;
 
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Article article;
+    private int articleId;
 
 }

@@ -4,49 +4,36 @@ $(function () {
         type: 'post',
         url: '/listAllArticle',
         success: function (res) {
-            formatArticleListRes(res);
-            bindArticleData(avatarUrl, account, releaseTime, title);
+            if (res !== "" && res !== null) {
+                bindArticleData(res);
+            }
         }
     })
+})
 
-    //对返回结果进行处理并绑定数据到视图上
-    function formatArticleListRes(res) {
-        if (res == null) return;
-        res.forEach(function (article) {
-            let avatarUrl;
-            let account;
-            let releaseTime;
-            let title;
+//绑定数据并加载视图
+function bindArticleData(res) {
+    var html = "";
 
-            releaseTime = article.releaseTime;
-            title = article.articleTitle;
-
-            if (article.admin != null) {
-                account = article.admin.account;
-                avatarUrl = article.admin.avatarUrl;
-            } else if (article.regularUser != null) {
-                account = article.regularUser.account;
-                avatarUrl = article.regularUser.avatarUrl;
-            }
-        })
-    }
-
-    //绑定数据并加载视图
-    function bindArticleData(avatarUrl, account, releaseTime, title) {
-        let articleHtml = "<div class=\"row text-bg-dark border mx-auto\">\n" +
-            "                        <div class=\"article_list_user_avatar_index border col-sm-3 col-md-3 col-lg-3 col-xl-3\">\n" +
-            "                            <img src=\"" + avatarUrl + "\" alt=\"这是头像\">\n" +
+    for (var i = 0; i < res.length; i++) {
+        html += "<div class=\" row text-bg-dark mb-3 border mx-auto article\">\n" +
+            "<input type=\"text\" name=\"articleId\" disabled hidden=\"hidden\"" + res.articleId + ">" +
+            "                        <div class=\"article_list_user_avatar_index border col-sm-2 col-md-2 col-lg-2 col-xl-2\">\n" +
+            "                            <img src=\"" + res[i].avatarUrl +
+            "\" alt=\"这是头像\" class=\"rounded\" style=\"height: 100px;width: 100px\">\n" +
             "                        </div>\n" +
-            "                        <div class=\"border col-sm-3 col-md-3 col-lg-3 col-xl-3\">\n" +
-            "                            <div class=\"article_list_user_account_index\">" + account + "</div>\n" +
-            "                            <div class=\"article_list_release_time_index\">" + releaseTime + "</div>\n" +
+            "                        <div class=\"border col-sm-5 col-md-5 col-lg-5 col-xl-5\">\n" +
+            "                            <div class=\"article_list_user_account_index\">账 &nbsp; &nbsp; 户  &nbsp; &nbsp; 名：" + res[i].account + "</div>\n" +
+            "                            <div class=\"article_list_last_modify_time_index\">上次修改时间：" + res[i].lastModifyTime.substring(0,16) + "</div>\n" +
+            "                            <div class=\"article_list_release_time_index\">发 &nbsp; 布&nbsp; 时&nbsp; 间：" + res[i].releaseTime.substring(0,16) + "</div>\n" +
             "                        </div>\n" +
-            "                        <div class=\"article_list_title border col-sm-6 col-md-6 col-lg-6 col-xl-6\">\n" +
-            title +
+            "                        <div class=\"border col-sm-5 col-md-5 col-lg-5 col-xl-5\">\n" +
+            "                            <button class=\"btn btn-white h-100 w-100 article_list_title\">\n" +
+            "                                " + res[i].articleTitle + "\n" +
+            "                            </button>\n" +
             "                        </div>\n" +
             "                    </div>"
-
-        $("#main").append(articleHtml);
     }
 
-})
+    $(".main").html(html);
+}

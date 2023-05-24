@@ -1,11 +1,14 @@
 package top.canoe0.blog.service;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import top.canoe0.blog.entity.Article;
 import top.canoe0.blog.entity.ArticleType;
+import top.canoe0.blog.entity.Comment;
 import top.canoe0.blog.entity.user.Admin;
 import top.canoe0.blog.entity.user.RegularUser;
 import top.canoe0.blog.entity.user.User;
@@ -26,16 +29,71 @@ public class ArticleService {
     @Autowired
     private ArticleTypeService articleTypeService;
 
+    @Autowired
+    private CommentService commentService;
 
-    //按不同字段排序查找文章
-    public List<Article> listAllArticle(String orderAttr, boolean isAsc) {
+
+    //按不同字段排序查找文章 orderAttr 为排序属性
+    public JSONArray listAllArticle(String orderAttr, boolean isAsc) {
+        List<Article> articleList;
         if (orderAttr == null) {
-            return articleRepository.findAll();
+            articleList = articleRepository.findAll();
+        } else if (isAsc) {
+            articleList = articleRepository.findAll(Sort.by(Sort.Direction.ASC, orderAttr));
+        } else {
+            articleList = articleRepository.findAll(Sort.by(Sort.Direction.DESC, orderAttr));
         }
-        if (isAsc) {
-            return articleRepository.findAll(Sort.by(Sort.Direction.ASC, orderAttr));
+
+        if (articleList == null) return null;
+        else {
+            return formatArticleList(articleList);
         }
-        return articleRepository.findAll(Sort.by(Sort.Direction.DESC, orderAttr));
+    }
+
+    //todo 文章接口
+    public JSONArray formatArticleList(List<Article> articleList) {
+        JSONArray articleListJSON = new JSONArray();
+        for (Article article : articleList) {
+            JSONObject articleJSON = new JSONObject();
+            articleJSON.put("articleId", article.getArticleId());
+            String account;
+            String avatarUrl;
+            if (article.getUserType() == "admin") {
+                account = userService.findAdminById(article.getUserId()).getAccount();
+                avatarUrl = userService.findAdminById(article.getUserId()).getAvatarUrl();
+            } else {
+                account = userService.findRegularUserById(article.getUserId()).getAccount();
+                avatarUrl = userService.findRegularUserById(article.getUserId()).getAvatarUrl();
+            }
+            articleJSON.put("account", account);
+            articleJSON.put("avatarUrl", avatarUrl);
+            articleJSON.put("lastModifyTime", article.getLastModifyTime());
+            articleJSON.put("releaseTime", article.getReleaseTime());
+
+            articleListJSON.add(articleJSON);
+        }
+        return articleListJSON;
+    }
+
+    public JSONObject getArticleJSON(int articleId) {
+        Article article = findArticleById(articleId);
+
+        JSONObject articleJSON = new JSONObject();
+        articleJSON.put("articleId", article.getArticleId());
+        articleJSON.put("articleTitle", article.getArticleTitle());
+        articleJSON.put("articleContent", article.getArticleContent());
+        System.out.println("article = " + article.getArticleId());
+        ArticleType articleType = articleTypeService.findByArticleId(article.getArticleId());
+
+        articleJSON.put("articleTypeId", articleType.getArticleTypeId());
+        articleJSON.put("articleTypeName", articleType.getArticleTypeName());
+
+        List<Comment> commentList = commentService.findCommentsByArticleId(articleId);
+
+        articleJSON.put("commentList", commentList);
+
+        return articleJSON;
+
     }
 
     //按文章名称模糊查询所有用户的文章

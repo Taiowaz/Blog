@@ -37,6 +37,11 @@ public class ArticleTypeService {
 
     //根据Id查找文章类型
     public ArticleType findAllArticleTypeById(int articleTypeId) {
-        return articleTypeRepository.findArticleTypeByArticleId(articleTypeId);
+        return articleTypeRepository.findArticleTypeByArticleTypeId(articleTypeId);
     }
+
+    public ArticleType findByArticleId(int articleId) {
+        return articleTypeRepository.findArticleTypeByArticleId(articleId);
+    }
+
 }
