@@ -14,7 +14,7 @@
         <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 
         <script src="/js/common.js"></script>
-        <script src="/js/article.js"></script>
+        <script src="/js/my_article.js"></script>
     </head>
     <body>
         <div class="container ">
@@ -44,32 +44,19 @@
                     <button class="btn btn-dark mb-2 w-100 edit_article">编辑文章</button>
                 </div>
                 <div class="main col-sm-8 col-md-8 col-lg-8 col-xl-8 border">
-                    <div class="w-100 article_title fs-2 text-center mb-3">44488487478</div>
-                    <div class="row border d-flex justify-content-center text-center mb-3">
-                        <div class="col-4 border article_account fs-4">作者：</div>
-                        <div class="col-4 border article_detail_type fs-4">文章类型：</div>
-                    </div>
-                    <div class="w-100 article_content fs-5 border mb-3">1554451</div>
-                    <div class="row add_comment border mb-3">
-                        <input type="text" name="article_id" hidden="hidden">
-                        <input type="text" name="user_id" hidden="hidden">
-                        <input type="text" name="user_type" hidden="hidden">
-                        <div class="col-9 border">
-                            <input type="text" class="form-control" name="comment_content">
+                    <div class=" row text-bg-dark border mx-auto article">
+                        <div class="article_list_user_avatar_index border col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                            <img src="" alt="这是头像" class="rounded" style="height: 100px;width: 100px">
                         </div>
-                        <div class="col-3 border">
-                            <button class="btn btn-outline-primary btn_add_comment w-100">发表评论</button>
+                        <div class="border col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                            <div class="article_list_user_account_index">账 &nbsp; &nbsp; 户 &nbsp; &nbsp; 名：</div>
+                            <div class="article_list_last_modify_time_index">上次修改时间：</div>
+                            <div class="article_list_release_time_index">发 &nbsp;布&nbsp; 时&nbsp; 间：</div>
                         </div>
-                    </div>
-                    <div class="row comment_list border">
-                        <div class="row">
-                            <div class="col-2 comment_avatar">
-                                <img src="" alt="" style="width: 100px; height: 100px;">
-                            </div>
-                            <div class="col-10">
-                                <div class="fs-4 comment_account">464464488486</div>
-                                <div class="fs-5 comment_content">4464484889884848998</div>
-                            </div>
+                        <div class="border col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                            <button class="btn btn-white h-100 w-100 article_list_title">
+                                这是博客题目
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -88,18 +75,6 @@
             </div>
 
             <div class="footer">
-                <div class="toast-container position-fixed bottom-0 end-0 p-3 ">
-                    <div id="liveToast" class="toast bg-danger-subtle" role="alert" aria-live="assertive"
-                         aria-atomic="true">
-                        <div class="toast-header">
-                            <strong class="me-auto"></strong>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div class="toast-body">
-                        </div>
-                    </div>
-                </div>
                 <hr>
                 <div>2023/4 Designed By HDB</div>
             </div>

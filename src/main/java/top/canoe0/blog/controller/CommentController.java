@@ -12,7 +12,7 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/addComment")
-    public Comment addComment(String account, String commentContent, int articleId) {
-        return commentService.saveComment(account, commentContent, articleId);
+    public Comment addComment(int userId, String userType, String commentContent, int articleId) {
+        return commentService.saveComment(userId, userType, commentContent, articleId);
     }
 }

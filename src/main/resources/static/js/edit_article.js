@@ -11,7 +11,6 @@ $(function () {
 //获取文章类型回调函数(在getSession后调用)
 function getArticleTypeCallback(res) {
     id = res.id;
-    console.log("res.id " + id);
     $("input[name='userId']").val(res.id);
     $("input[name='userType']").val(res.userType);
     $.ajax({
@@ -26,7 +25,6 @@ function getArticleTypeCallback(res) {
 
 //绑定文章类型回调函数
 function bindArticleTypeData(res) {
-    console.log(res)
     var html = "";
     for (var i = 0; i < res.length; i++) {
         html += "<option value=" + res[i].articleTypeId + ">" + res[i].articleTypeName + "</option>"
@@ -46,13 +44,11 @@ function btnSaveArticleEvent() {
     var articleContent = tinymce.activeEditor.getContent();
     var articleTypeId = $("select.sel_article_Type").val();
 
-    console.log(articleTypeId)
 
     if (!vertifyArticle(articleTitle, articleContent, articleTypeId)) {
         return;
     }
 
-    console.log(tinymce.activeEditor.getContent());
     $.ajax({
         method: 'post',
         url: "/saveArticle",
@@ -65,6 +61,12 @@ function btnSaveArticleEvent() {
             "articleTypeId": articleTypeId
         }
     }).then((res) => {
+        console.log(res)
+        if (res === "" || res === null) {
+            toast("保存失败", "类型已被使用");
+            return;
+        }
+        // window.location.href = "/myArticle";
     })
 }
 

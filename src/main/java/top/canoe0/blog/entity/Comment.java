@@ -13,7 +13,9 @@ public class Comment {
     @GeneratedValue
     private int commentId;
 
-    private String account;
+    private int userId;
+
+    private String userType;
 
     private int replyCommentId;
 

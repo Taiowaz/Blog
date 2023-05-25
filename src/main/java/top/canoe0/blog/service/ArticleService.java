@@ -56,6 +56,7 @@ public class ArticleService {
         for (Article article : articleList) {
             JSONObject articleJSON = new JSONObject();
             articleJSON.put("articleId", article.getArticleId());
+            articleJSON.put("articleTitle", article.getArticleTitle());
             String account;
             String avatarUrl;
             if (article.getUserType() == "admin") {
@@ -81,16 +82,30 @@ public class ArticleService {
         JSONObject articleJSON = new JSONObject();
         articleJSON.put("articleId", article.getArticleId());
         articleJSON.put("articleTitle", article.getArticleTitle());
+
+        String account;
+        if (article.getUserType() == "admin") {
+            account = userService.findAdminById(article.getUserId()).getAccount();
+        } else {
+            account = userService.findRegularUserById(article.getUserId()).getAccount();
+        }
+
+        articleJSON.put("account", account);
+
         articleJSON.put("articleContent", article.getArticleContent());
-        System.out.println("article = " + article.getArticleId());
+
+        System.out.println(articleId);
+        System.out.println("article.getArticleId() = " + article.getArticleId());
         ArticleType articleType = articleTypeService.findByArticleId(article.getArticleId());
 
         articleJSON.put("articleTypeId", articleType.getArticleTypeId());
         articleJSON.put("articleTypeName", articleType.getArticleTypeName());
 
-        List<Comment> commentList = commentService.findCommentsByArticleId(articleId);
+        System.out.println("articleType = " + articleType);
 
-        articleJSON.put("commentList", commentList);
+        JSONArray commentJSONArray = commentService.findCommentJSONListByArticleId(articleId);
+
+        articleJSON.put("commentList", commentJSONArray);
 
         return articleJSON;
 
@@ -105,6 +120,11 @@ public class ArticleService {
     public Article saveArticle(int userId, String userType,
                                int articleId, String articleTitle, String articleContent,
                                int articleTypeId) {
+        ArticleType articleType = articleTypeService.findAllArticleTypeById(articleTypeId);
+        if (articleType.getArticleId() != 0) {
+            return null;
+        }
+
         Article article;
         if (articleId == 0) {
             article = new Article();
@@ -126,7 +146,7 @@ public class ArticleService {
         Article articleRes = articleRepository.save(article);
 
         //设置articleType
-        ArticleType articleType = articleTypeService.findAllArticleTypeById(articleTypeId);
+
         articleType.setArticleId(articleRes.getArticleId());
         articleTypeService.saveArticleType(articleType);
 

@@ -38,7 +38,12 @@ public class IndexController {
     }
 
     @GetMapping("/editArticle")
-    public String editArticle(){
+    public String editArticle() {
         return "/edit_article";
+    }
+
+    @GetMapping("/article")
+    public String article() {
+        return "/article";
     }
 }
