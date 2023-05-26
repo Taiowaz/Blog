@@ -1,4 +1,5 @@
 $(function () {
+    $(".present_page").text("文章内容");
     var articleId = getUrlParam("articleId");
 
     $("input[name='article_id']").val(articleId);

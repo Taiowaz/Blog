@@ -50,7 +50,7 @@ public class ArticleService {
         }
     }
 
-    //todo 文章接口
+    //对文章列表进行处理
     public JSONArray formatArticleList(List<Article> articleList) {
         JSONArray articleListJSON = new JSONArray();
         for (Article article : articleList) {
@@ -76,6 +76,7 @@ public class ArticleService {
         return articleListJSON;
     }
 
+    //获取文章详细详细
     public JSONObject getArticleJSON(int articleId) {
         Article article = findArticleById(articleId);
 
@@ -111,6 +112,14 @@ public class ArticleService {
 
     }
 
+    //获取特定用户文章
+    public JSONArray listArticleByUserIdAndUserType(int userId, String userType) {
+        List<Article> articleList = articleRepository.findByUserIdAndUserType(userId, userType);
+        if (articleList == null) return null;
+
+        return formatArticleList(articleList);
+    }
+
     //按文章名称模糊查询所有用户的文章
     public List<Article> listArticleByTitle(String keyword) {
         return articleRepository.findByArticleTitleLike("%" + keyword + "%");
@@ -120,7 +129,7 @@ public class ArticleService {
     public Article saveArticle(int userId, String userType,
                                int articleId, String articleTitle, String articleContent,
                                int articleTypeId) {
-        ArticleType articleType = articleTypeService.findAllArticleTypeById(articleTypeId);
+        ArticleType articleType = articleTypeService.findArticleTypeById(articleTypeId);
         if (articleType.getArticleId() != 0) {
             return null;
         }
@@ -156,5 +165,20 @@ public class ArticleService {
 
     public Article findArticleById(int articleId) {
         return articleRepository.findByArticleId(articleId);
+    }
+
+
+    //删除文章
+    public void deleteArticleByArticleId(int articleId) {
+        Article article = findArticleById(articleId);
+
+        //更新articleType
+        ArticleType articleType = articleTypeService.findByArticleId(article.getArticleId());
+        //todo type检验
+        articleType.setArticleId(0);
+        System.out.println("articleType.getArticleId() = " + articleType.getArticleId());
+        articleTypeService.saveArticleType(articleType);
+
+        articleRepository.delete(article);
     }
 }

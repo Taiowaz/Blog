@@ -1,4 +1,6 @@
 $(function () {
+        $(".present_page").text("我的信息");
+
         var id;
         var userType;
 

@@ -46,4 +46,11 @@ public class IndexController {
     public String article() {
         return "/article";
     }
+
+    @GetMapping("/myArticle")
+    public String myArticle() {
+        return "/my_article";
+    }
+
+
 }

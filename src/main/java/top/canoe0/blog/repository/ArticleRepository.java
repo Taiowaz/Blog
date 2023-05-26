@@ -10,4 +10,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findByArticleTitleLike(String keyword);
 
     Article findByArticleId(int articleId);
+
+    List<Article> findByUserIdAndUserType(int userId,String userType);
 }

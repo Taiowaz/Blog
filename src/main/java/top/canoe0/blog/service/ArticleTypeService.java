@@ -25,8 +25,13 @@ public class ArticleTypeService {
 
 
     //删除文章类型
-    public void deleteArticleTypeById(int articleTypeId) {
+    public String deleteArticleTypeById(int articleTypeId) {
+        ArticleType articleType = findArticleTypeById(articleTypeId);
+        if (articleType.getArticleId() != 0) {
+            return null;
+        }
         articleTypeRepository.deleteById(articleTypeId);
+        return "true";
     }
 
 
@@ -36,7 +41,7 @@ public class ArticleTypeService {
     }
 
     //根据Id查找文章类型
-    public ArticleType findAllArticleTypeById(int articleTypeId) {
+    public ArticleType findArticleTypeById(int articleTypeId) {
         return articleTypeRepository.findArticleTypeByArticleTypeId(articleTypeId);
     }
 

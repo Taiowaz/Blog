@@ -1,4 +1,5 @@
 $(function () {
+    $(".present_page").text("用户列表");
     var presentListType;
 
     init();
@@ -24,6 +25,7 @@ $(function () {
 
     //显示普通用户列表
     $("#btn_regular_user_list").click(function () {
+        $(".present_page").text("用户列表");
         presentListType = "regularUser";
         $("#add_admin").hide();
         sentRequestForUserList("/listAllRegularUser");
@@ -31,6 +33,7 @@ $(function () {
 
     //显示管理员用户列表
     $("#btn_admin_list").click(function () {
+        $(".present_page").text("管理员列表");
         presentListType = "admin";
         $("#add_admin").show();
         sentRequestForUserList("/listAllAdmin");

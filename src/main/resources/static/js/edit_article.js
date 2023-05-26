@@ -1,4 +1,6 @@
 $(function () {
+    $(".present_page").text("编辑文章");
+
     getSession(getArticleTypeCallback);
     tinymce.init({
         selector: 'textarea#articleContent',
@@ -66,7 +68,7 @@ function btnSaveArticleEvent() {
             toast("保存失败", "类型已被使用");
             return;
         }
-        // window.location.href = "/myArticle";
+        window.location.href = "/myArticle";
     })
 }
 

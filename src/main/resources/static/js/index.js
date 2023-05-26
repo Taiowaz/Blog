@@ -1,4 +1,6 @@
 $(function () {
+    $(".present_page").text("首页");
+
     //发送请求获取博客列表
     //todo articleTitle无法显示
     $.ajax({
@@ -11,6 +13,8 @@ $(function () {
             }
         }
     })
+
+
 })
 
 //绑定数据并加载视图

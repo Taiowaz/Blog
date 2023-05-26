@@ -36,8 +36,8 @@ public class ArticleTypeController {
     }
 
     @PostMapping("/deleteArticleTypeById")
-    public void deleteArticleTypeById(int articleTypeId) {
-        articleTypeService.deleteArticleTypeById(articleTypeId);
+    public String deleteArticleTypeById(int articleTypeId) {
+        return articleTypeService.deleteArticleTypeById(articleTypeId);
     }
 
     //根据用户id查找文章类型

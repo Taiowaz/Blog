@@ -1,4 +1,6 @@
 $(function () {
+    $(".present_page").text("登录/注册");
+
     //设置管理员/用户标题切换提示
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
@@ -54,17 +56,6 @@ $(function () {
     })
 
 
-    //登录请求成功函数
-    function loginRequestSuccess(res) {
-        console.log(res);
-        if (res == null || res == '') {
-            toast('登录失败', '账号或密码错误');
-        } else {
-            window.location.href = "/";
-        }
-    }
-
-
     //注册点击事件
     $("#register").click(function () {
         let account = $('#input_account').val();
@@ -89,22 +80,33 @@ $(function () {
 
     })
 
-    //注册请求成功函数
-    function registerRequestSuccess(res) {
-        if (res == null || res == '') {
-            toast('注册失败', '用户已存在');
-            return;
-        }
-        toast('注册成功', '欢迎加入博客');
-    }
-
-    //验证账号与密码是否合理
-    function vertify(account, password) {
-        if (account.length >= 2 && account.length <= 8 && password.length >= 6 && password.length <= 20) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 })
+
+//登录请求成功函数
+function loginRequestSuccess(res) {
+    console.log(res);
+    if (res == null || res == '') {
+        toast('登录失败', '账号或密码错误');
+    } else {
+        window.location.href = "/";
+    }
+}
+
+//注册请求成功函数
+function registerRequestSuccess(res) {
+    if (res == null || res == '') {
+        toast('注册失败', '用户已存在');
+        return;
+    }
+    toast('注册成功', '欢迎加入博客');
+}
+
+//验证账号与密码是否合理
+function vertify(account, password) {
+    if (account.length >= 2 && account.length <= 8 && password.length >= 6 && password.length <= 20) {
+        return true;
+    } else {
+        return false;
+    }
+}

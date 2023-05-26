@@ -1,4 +1,5 @@
 $(function () {
+    $(".present_page").text("文章类型");
 
         getSession(callbackFunction);
 
@@ -93,8 +94,10 @@ $(function () {
                     type: "POST",
                     data: {"articleTypeId": articleTypeId},
                     success: function (res) {
-                        if (res===null||res===""){
-                            toast("删除失败","文章类型使用中")
+                        console.log(res);
+                        if (res === "") {
+                            toast("删除失败", "文章类型使用中")
+                            return;
                         }
                         window.location.href = "/articleType";
                     }

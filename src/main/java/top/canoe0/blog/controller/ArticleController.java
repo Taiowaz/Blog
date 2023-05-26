@@ -18,16 +18,19 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    //显示所有文章
     @PostMapping("/listAllArticle")
     public JSONArray listAllArticle(String orderAttr, boolean isAsc) {
         return articleService.listAllArticle(orderAttr, isAsc);
     }
 
+    //通过文章
     @PostMapping("listArticleByTitle")
     public List<Article> listArticleByTitle(String keyword) {
         return listArticleByTitle(keyword);
     }
 
+    //保存文章
     @PostMapping("/saveArticle")
     public Article saveArticle(int userId, String userType,
                                int articleId, String articleTitle, String articleContent,
@@ -37,8 +40,20 @@ public class ArticleController {
                 articleTypeId);
     }
 
+    //获取文章详细信息
     @PostMapping("/getArticleDetail")
     public JSONObject getArticleDetail(@RequestParam int articleId) {
         return articleService.getArticleJSON(articleId);
+    }
+
+    //获取特定用户文章
+    @PostMapping(("/getArticleByUserIdAndUserType"))
+    public JSONArray getArticleByUserId(@RequestParam int userId, @RequestParam String userType) {
+        return articleService.listArticleByUserIdAndUserType(userId, userType);
+    }
+
+    @PostMapping("/deleteArticle")
+    public void deleteArticle(@RequestParam int articleId) {
+        articleService.deleteArticleByArticleId(articleId);
     }
 }

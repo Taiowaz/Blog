@@ -64,20 +64,23 @@ function btnUserInfoClickEvent() {
 //用户列表或日志列表点击事件
 function btnUserListOrLogListClickEvent() {
     var url;
-    if (this.className === "user_list") {
+    var btnText = $(this).text();
+    if (btnText === "用户列表") {
         url = "/userList";
     } else {
         url = "/logList";
     }
+    console.log(url)
     $.ajax({
         url: '/getSession',
         type: 'get',
         success: function (res) {
+            console.log("res " + res);
             if (res == null || res == '') {
-                window.location.href = url;
+                window.location.href = "/loginRegister";
             } else {
                 if (res.userType === 'admin') {
-                    window.location.href = "/userList";
+                    window.location.href = url;
                 } else {
                     toast("警告", "您没有权限访问该页面！");
                 }
