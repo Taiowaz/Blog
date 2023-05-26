@@ -29,7 +29,6 @@ public class ArticleTypeController {
         articleType.setUserId(userId);
         articleType.setUserType(userType);
         articleType.setArticleTypeName(articleTypeName);
-        System.out.println("articleType = " + articleType);
         ArticleType articleTypeRes = articleTypeService.saveArticleType(articleType);
 
         return articleTypeRes;
@@ -41,8 +40,8 @@ public class ArticleTypeController {
     }
 
     //根据用户id查找文章类型
-    @PostMapping("/listArticleTypeByUserId")
-    public List<ArticleType> listArticleTypeByUserId(@RequestParam int userId) {
-        return articleTypeService.findAllArticleTypeByUserId(userId);
+    @PostMapping("/listArticleTypeByUser")
+    public List<ArticleType> listArticleTypeByUserId(@RequestParam int userId, @RequestParam String userType) {
+        return articleTypeService.findAllArticleTypeByUserId(userId, userType);
     }
 }

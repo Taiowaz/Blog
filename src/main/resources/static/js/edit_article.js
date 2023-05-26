@@ -12,12 +12,13 @@ $(function () {
 
 //获取文章类型回调函数(在getSession后调用)
 function getArticleTypeCallback(res) {
-    id = res.id;
-    $("input[name='userId']").val(res.id);
-    $("input[name='userType']").val(res.userType);
+    var id = res.id;
+    var userType = res.userType;
+    $("input[name='userId']").val(id);
+    $("input[name='userType']").val(userType);
     $.ajax({
-        url: "/listArticleTypeByUserId",
-        data: {"userId": id},
+        url: "/listArticleTypeByUser",
+        data: {"userId": id, "userType": userType},
         type: "post",
         success: function (res) {
             bindArticleTypeData(res);

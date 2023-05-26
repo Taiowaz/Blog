@@ -28,7 +28,7 @@ public class CommentService {
 
             String account;
             String avatarUrl;
-            if (comment.getUserType() == "admin") {
+            if (comment.getUserType().equals("admin")) {
                 account = userService.findAdminById(comment.getUserId()).getAccount();
                 avatarUrl = userService.findAdminById(comment.getUserId()).getAvatarUrl();
             } else {

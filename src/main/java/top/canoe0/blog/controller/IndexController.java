@@ -68,6 +68,11 @@ public class IndexController {
         return "/search";
     }
 
+    @GetMapping("/logList")
+    public String logList() {
+        return "/log_list";
+    }
+
     //获取搜索匹配用户与文章
     @PostMapping("/searchContent")
     @ResponseBody

@@ -39,6 +39,9 @@ $(function () {
         sentRequestForUserList("/listAllAdmin");
     })
 
+    //添加管理员
+    $(".btn_add_admin").click(btnAddAdminEvent);
+
     //绑定数据到用户列表
     function bindRes(res) {
         var html = "";
@@ -74,7 +77,6 @@ $(function () {
                     //绑定按钮事件
                     $(".btn_save_user").click(btnSaveUserEvent);
                     $(".btn_delete_user").click(btnDeleteUserEvent);
-                    $(".btn_add_admin").click(btnAddAdminEvent);
                 }
             }
         })
@@ -86,6 +88,7 @@ $(function () {
         var id = userRowDiv.find("input[name='id']").val();
         var password = userRowDiv.find("input[name='password']").val();
         if (presentListType === 'regularUser') {
+            console.log(presentListType);
             saveUser('/updateRegularUserPassword', id, password);
         } else {
             saveUser('/updateAdminPassword', id, password);
@@ -126,6 +129,10 @@ $(function () {
 
     //保存用户
     function saveUser(url, id, password) {
+        if (password.length < 6 || password.length >= 20) {
+            toast("保存失败", "密码不合理");
+            return;
+        }
         $.ajax({
             url: url,
             type: 'post',
@@ -141,6 +148,7 @@ $(function () {
 
     //添加管理员按钮事件
     function btnAddAdminEvent() {
+        console.log(true)
         var addAdminRowDiv = $(this).parent().parent();
         var account = addAdminRowDiv.find("input[name='admin_account']").val();
         var password = addAdminRowDiv.find("input[name='admin_password']").val();
@@ -154,6 +162,8 @@ $(function () {
 
     //添加管理员
     function addAdmin(account, password) {
+        console.log(account);
+        console.log(password);
         $.ajax(
             {
                 url: "/addAdmin",

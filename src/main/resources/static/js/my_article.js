@@ -85,6 +85,6 @@ function btnDeleteArticleEvent() {
         }
     });
 
-    // window.location.href = "/myArticle";
+    window.location.href = "/myArticle";
 }
 

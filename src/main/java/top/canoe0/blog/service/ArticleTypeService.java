@@ -36,8 +36,8 @@ public class ArticleTypeService {
 
 
     //根据用户ID查找文章类型
-    public List<ArticleType> findAllArticleTypeByUserId(int userId) {
-        return articleTypeRepository.findArticleTypesByUserId(userId);
+    public List<ArticleType> findAllArticleTypeByUserId(int userId, String userType) {
+        return articleTypeRepository.findArticleTypesByUserIdAndUserType(userId, userType);
     }
 
     //根据Id查找文章类型

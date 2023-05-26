@@ -2,13 +2,14 @@ package top.canoe0.blog.service;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.sun.xml.internal.stream.StaxErrorReporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.canoe0.blog.entity.log.LoginLog;
+import top.canoe0.blog.entity.log.OperateLog;
 import top.canoe0.blog.entity.user.Admin;
 import top.canoe0.blog.entity.user.RegularUser;
-import top.canoe0.blog.repository.AdminRepository;
-import top.canoe0.blog.repository.RegularUserRepository;
+import top.canoe0.blog.repository.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
@@ -27,6 +28,13 @@ public class UserService {
     private RegularUserRepository regularUserRepository;
     @Autowired
     private LogService logService;
+    @Autowired
+    private ArticleRepository articleRepository;
+    @Autowired
+    private ArticleTypeRepository articleTypeRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+
 
     //session
     public JSONObject getSession(HttpSession session) throws Exception {
@@ -60,50 +68,80 @@ public class UserService {
 
     //添加或更新管理员用户(禁止用户与管理员重名)
     public Admin saveAdmin(HttpSession session, Admin admin) {
+        int operateAdminId = Integer.valueOf((String) session.getAttribute("id"));
+
         //第一次注册
         if (admin.getId() == 0) {
             if (isAccountExist(admin.getAccount())) {
                 return null;
             }
+            //todo 后端没验证
+            //设置操作日志
+            String operateType = "[" + session.getAttribute("account") + "]添加[" + admin.getAccount() + "]为管理员";
+            logService.saveOperateLog(operateAdminId, operateType);
+
             admin.setRegisterTime(LocalDateTime.now());
         } else {
             //更新用户信息根据Id来更新
             Admin adminDB = findAdminById(admin.getId());
+
+            //保存操作日志
+            if (admin.getId() != operateAdminId && !admin.getPassword().equals(adminDB.getPassword())) {
+                String operateType = "[" + session.getAttribute("account") + "]修改[" + admin.getAccount() +
+                        "]密码为[" + admin.getPassword() + "]";
+                logService.saveOperateLog(operateAdminId, operateType);
+            }
+
             //由于加载用户信息时，不会把头像加载到页面，故需要判断传入是否非空，防止覆盖原头像
-            if (admin.getAvatarUrl() == null || admin.getAvatarUrl() == "") {
+            if (admin.getAvatarUrl() == null || admin.getAvatarUrl().equals("")) {
                 admin.setAvatarUrl(adminDB.getAvatarUrl());
             }
             //该值不变，只是前端不传该值故设置
             admin.setRegisterTime(adminDB.getRegisterTime());
-            //更新信息时重新设置session
-            setSession(session, String.valueOf(admin.getId()),
-                    admin.getAccount(), admin.getAvatarUrl(), "admin");
+            //本人更新信息时重新设置session
+            if (admin.getId() == Integer.valueOf((String) session.getAttribute("id"))) {
+                setSession(session, String.valueOf(admin.getId()),
+                        admin.getAccount(), admin.getAvatarUrl(), "admin");
+            }
         }
         admin.setLastModifyTime(LocalDateTime.now());
         return adminRepository.save(admin);
     }
 
-    //todo 这里有缺陷，未检查是否更改信息，只要传入就会改上次修改时间
     //添加或更新普通用户
     public RegularUser saveRegularUser(HttpSession session, RegularUser regularUser) {
+
+
         if (regularUser.getId() == 0) {
             if (isAccountExist(regularUser.getAccount())) {
                 return null;
             }
+
             regularUser.setRegisterTime(LocalDateTime.now());
-            System.out.println("regularUser = " + regularUser.getRegisterTime());
         } else {
             RegularUser regularUserDB = findRegularUserById(regularUser.getId());
+
+            if (session != null) {
+                //管理员设置密码时记录日志
+                if (session.getAttribute("userType").equals("admin") && !regularUser.getPassword().equals(regularUserDB.getPassword())) {
+                    int operateAdminId = (int) session.getAttribute("id");
+                    String operateType = "[" + session.getAttribute("account") + "]修改[" + regularUser.getAccount() +
+                            "]密码为[" + regularUser.getPassword() + "]";
+                    logService.saveOperateLog(operateAdminId, operateType);
+                }
+            }
+
             //由于加载用户信息时，不会把头像加载到页面，故需要判断传入是否非空，防止覆盖原头像
-            if (regularUser.getAvatarUrl() == null || regularUser.getAvatarUrl() == "") {
+            if (regularUser.getAvatarUrl() == null || regularUser.getAvatarUrl().equals("")) {
                 regularUser.setAvatarUrl(regularUserDB.getAvatarUrl());
             }
             //该值不变，只是前端不传该值故设置
             regularUser.setRegisterTime(regularUserDB.getRegisterTime());
-            //更新信息时重新设置session
-            setSession(session, String.valueOf(regularUser.getId()),
-                    regularUser.getAccount(), regularUser.getAvatarUrl(), "regularUser");
-
+            //本人更新信息时重新设置session
+            if (regularUser.getId() == Integer.valueOf((String) session.getAttribute("id"))) {
+                setSession(session, String.valueOf(regularUser.getId()),
+                        regularUser.getAccount(), regularUser.getAvatarUrl(), "regularUser");
+            }
         }
         regularUser.setLastModifyTime(LocalDateTime.now());
         return regularUserRepository.save(regularUser);
@@ -149,7 +187,8 @@ public class UserService {
 
     //通过id查找管理员
     public Admin findAdminById(int id) {
-        return adminRepository.findAdminById(id);
+        Admin admin = adminRepository.findAdminById(id);
+        return admin;
     }
 
     //   登录管理员
@@ -206,13 +245,43 @@ public class UserService {
     }
 
     //删除管理员通过账户
-    public void deleteAdminById(int id) {
+    public void deleteAdminById(HttpSession session, int id) {
+        int operateAdminId = Integer.valueOf((String) session.getAttribute("id"));
+        Admin admin = findAdminById(id);
+        String operateType = "[" + session.getAttribute("account") + "]删除了管理员[" + admin.getAccount() + "]";
+        logService.saveOperateLog(operateAdminId, operateType);
+
+        //删除其文章
+        articleRepository.deleteAllByUserIdAndUserType(id, "admin");
+        //删除其文章类型
+        articleTypeRepository.deleteAllByUserIdAndUserType(id, "admin");
+        //删除其评论
+        commentRepository.deleteAllByUserIdAndUserType(id, "admin");
+        //删除其登录日志
+        logService.deleteLoginLog(id, "admin");
+        //删除其操作日志
+        logService.deleteOperateLog(id);
+
         adminRepository.deleteAdminById(id);
+
     }
 
-    //删除普通用户通过账户
-    public void deleteRegularUserById(int id) {
-        System.out.println("id = " + id);
+    //删除普通用户通过id
+    public void deleteRegularUserById(HttpSession session, int id) {
+        int operateAdminId = Integer.valueOf((String) session.getAttribute("id"));
+        RegularUser regularUser = findRegularUserById(id);
+        String operateType = "[" + session.getAttribute("account") + "]删除了普通用户[" + regularUser.getAccount() + "]";
+        logService.saveOperateLog(operateAdminId, operateType);
+
+        //删除其文章
+        articleRepository.deleteAllByUserIdAndUserType(id, "regularUser");
+        //删除其文章类型
+        articleTypeRepository.deleteAllByUserIdAndUserType(id, "regularUser");
+        //删除其评论
+        commentRepository.deleteAllByUserIdAndUserType(id, "regularUser");
+        //删除其登录日志
+        logService.deleteLoginLog(id, "regularUser");
+
         regularUserRepository.deleteRegularUserById(id);
     }
 
@@ -256,4 +325,15 @@ public class UserService {
             return regularUserJSONArray;
         }
     }
+
+
+    public void logout(HttpSession session) {
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUserId(Integer.valueOf((String) session.getAttribute("id")));
+        loginLog.setUserType((String) session.getAttribute("userType"));
+        loginLog.setLoginStatus("注销");
+        logService.saveLoginLog(loginLog);
+        session.invalidate();
+    }
+
 }

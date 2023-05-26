@@ -59,11 +59,13 @@ public class ArticleService {
             articleJSON.put("articleTitle", article.getArticleTitle());
             String account;
             String avatarUrl;
-            if (article.getUserType() == "admin") {
+            if (article.getUserType().equals("admin")) {
                 account = userService.findAdminById(article.getUserId()).getAccount();
                 avatarUrl = userService.findAdminById(article.getUserId()).getAvatarUrl();
             } else {
-                account = userService.findRegularUserById(article.getUserId()).getAccount();
+                RegularUser regularUser = userService.findRegularUserById(article.getUserId());
+                System.out.println("regularUser = " + regularUser);
+                account = regularUser.getAccount();
                 avatarUrl = userService.findRegularUserById(article.getUserId()).getAvatarUrl();
             }
             articleJSON.put("account", account);
@@ -85,7 +87,7 @@ public class ArticleService {
         articleJSON.put("articleTitle", article.getArticleTitle());
 
         String account;
-        if (article.getUserType() == "admin") {
+        if (article.getUserType().equals("admin")) {
             account = userService.findAdminById(article.getUserId()).getAccount();
         } else {
             account = userService.findRegularUserById(article.getUserId()).getAccount();
@@ -94,15 +96,10 @@ public class ArticleService {
         articleJSON.put("account", account);
 
         articleJSON.put("articleContent", article.getArticleContent());
-
-        System.out.println(articleId);
-        System.out.println("article.getArticleId() = " + article.getArticleId());
         ArticleType articleType = articleTypeService.findByArticleId(article.getArticleId());
 
         articleJSON.put("articleTypeId", articleType.getArticleTypeId());
         articleJSON.put("articleTypeName", articleType.getArticleTypeName());
-
-        System.out.println("articleType = " + articleType);
 
         JSONArray commentJSONArray = commentService.findCommentJSONListByArticleId(articleId);
 
@@ -179,7 +176,6 @@ public class ArticleService {
         ArticleType articleType = articleTypeService.findByArticleId(article.getArticleId());
         //todo type检验
         articleType.setArticleId(0);
-        System.out.println("articleType.getArticleId() = " + articleType.getArticleId());
         articleTypeService.saveArticleType(articleType);
 
         articleRepository.delete(article);

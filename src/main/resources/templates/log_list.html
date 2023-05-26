@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <!-- 新 Bootstrap5 核心 CSS 文件 -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+
+        <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+        <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+
+        <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+        <script src="/js/common.js"></script>
+        <script src="/js/log_list.js"></script>
+    </head>
+    <body>
+        <div class="container ">
+            <div class="header row mb-5 mt-2 border">
+                <div class="col-sm-6 col-md-5 col-lg-5 col-xl-5 border">
+                    <button class="btn btn-dark w-50 h-100 index">BLOG</button>
+                </div>
+                <div class="present_page col-sm-6 col-md-2 col-lg-2 col-xl-2 border border fs-2 fw-bold
+                                d-flex flex-row justify-content-center align-items-center">
+                    当前板块
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 border">
+                    <form action="/search" method="post" class="form-floating row border">
+                        <input type="search" name="keyword" class="form-control col" id="floatingInput"
+                               placeholder="博客标题/用户名/用户描述信息">
+                        <label for="floatingInput">博客标题/用户名/用户描述信息</label>
+                        <button type="submit" class="btn btn-dark col-md-3 ms-3">搜索</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="lefter col-sm-2 col-md-2 col-lg-2 col-xl-2 border">
+                    <button class="btn btn-dark mb-2 w-100 index">首&nbsp; &nbsp; &nbsp; &nbsp;页</button>
+                    <button class="btn btn-dark mb-2 w-100 my_article">我的文章</button>
+                    <button class="btn btn-dark mb-2 w-100 article_type">文章类型</button>
+                    <button class="btn btn-dark mb-2 w-100 edit_article">编辑文章</button>
+                </div>
+
+                <div class="main col-sm-8 col-md-8 col-lg-8 col-xl-8 border">
+                    <div class="mx-2 mb-2 border d-flex flex-row justify-centent-center">
+                        <button type="button" id="btn_login_log_list" class="btn btn-secondary w-50  mx-auto">
+                            登录日志
+                        </button>
+                        <button type="button" id="btn_operate_log_list" class="btn btn-danger w-50  mx-auto">
+                            操作日志
+                        </button>
+                    </div>
+                    <div class="row text-center border mx-2 mb-2" id="log_list_index">
+                        <div class="col-4 border">账户</div>
+                        <div class="col-4 border">操作</div>
+                        <div class="col-4 border">时间</div>
+                    </div>
+                    <div id="log_list">
+                        <div class="row text-center border mx-2 mb-2">
+                            <div class="col-4 border">
+                            </div>
+                            <div class="col-4 border">
+                            </div>
+                            <div class="col-4 border">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="righter col-sm-2 col-md-2 col-lg-2 col-xl-2 border">
+                    <button class="btn btn-dark mb-2 w-100 user_info">
+                        <div>
+                            <img src="" alt="这是头像" class="rounded avatar" style="height: 100px;width: 100px">
+                        </div>
+                        <div class="account">用户名</div>
+                    </button>
+                    <button class="btn btn-dark mb-2 w-100 user_list">用户列表</button>
+                    <button class="btn btn-dark mb-2 w-100 log_list">日志列表</button>
+                    <button class="btn btn-dark mb-2 w-100">空空空空</button>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="toast-container position-fixed bottom-0 end-0 p-3 ">
+                    <div id="liveToast" class="toast bg-danger-subtle" role="alert" aria-live="assertive"
+                         aria-atomic="true">
+                        <div class="toast-header">
+                            <strong class="me-auto"></strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div>2023/4 Designed By HDB</div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,24 +1,26 @@
 $(function () {
-    $(".present_page").text("文章类型");
+        $(".present_page").text("文章类型");
 
         getSession(callbackFunction);
 
         //设置获取Session后的回调函数
         function callbackFunction(res) {
-            id = res.id;
+            var id = res.id;
+            var userType = res.userType;
             console.log("userId  " + id);
             $("input[name='userId']").val(id);
+            $("input[name='userType']").val(userType);
             console.log("userId  " + $("input[name='userId']").val());
-            loadArticleType(id);
+            loadArticleType(id, userType);
 
         }
 
         //加载文章类型
-        function loadArticleType(id) {
+        function loadArticleType(id, userType) {
             $.ajax({
-                url: "/listArticleTypeByUserId",
+                url: "/listArticleTypeByUser",
                 type: "post",
-                data: {"userId": id},
+                data: {"userId": id, "userType": userType},
                 success: function (res) {
                     if (res !== "") {
                         bindArticleTypeData(res);
@@ -60,8 +62,9 @@ $(function () {
                 return;
             }
             var userId = $("input[name='userId']").val();
+            var userType = $("input[name='userType']").val();
 
-            sendUpdateOrAddArticleTypeRequest(userId, 0, articleTypeName, '添加失败', '文章类型已存在');
+            sendUpdateOrAddArticleTypeRequest(userId, userType, 0, articleTypeName, '添加失败', '文章类型已存在');
         })
 
 
@@ -70,6 +73,7 @@ $(function () {
             //找到每行的起始div
             var norDiv = $(this).parent().parent();
             var userId = $("input[name='userId']").val();
+            var userType = $("input[name='userType']").val();
             var articleTypeId = norDiv.find("input[name='articleTypeId']").val();
             var articleTypeName = norDiv.find("input[name='articleTypeName']").val();
 
@@ -79,7 +83,7 @@ $(function () {
                 return;
             }
 
-            sendUpdateOrAddArticleTypeRequest(userId, articleTypeId, articleTypeName, '保存失败', '文章类型已存在');
+            sendUpdateOrAddArticleTypeRequest(userId, userType, articleTypeId, articleTypeName, '保存失败', '文章类型已存在');
         }
 
         //删除文章类型按钮点击事件
@@ -106,12 +110,17 @@ $(function () {
         }
 
         //发送更新或添加文章类型请求
-        function sendUpdateOrAddArticleTypeRequest(userId, articleTypeId, articleTypeName, header, body) {
+        function sendUpdateOrAddArticleTypeRequest(userId, userType, articleTypeId, articleTypeName, header, body) {
             console.log(userId)
             $.ajax({
                 url: "/addArticleType",
                 type: "POST",
-                data: {"userId": userId, "articleTypeId": articleTypeId, "articleTypeName": articleTypeName},
+                data: {
+                    "userId": userId,
+                    "userType": userType,
+                    "articleTypeId": articleTypeId,
+                    "articleTypeName": articleTypeName
+                },
                 success: function (res) {
                     if (res == null || res == "") {
                         toast(header, body);

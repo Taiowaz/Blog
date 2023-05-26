@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import top.canoe0.blog.entity.log.LoginLog;
 import top.canoe0.blog.entity.user.Admin;
 import top.canoe0.blog.entity.user.RegularUser;
 import top.canoe0.blog.entity.user.User;
@@ -27,7 +28,7 @@ public class UserController {
     //注销
     @GetMapping("/logout")
     public void logout(HttpSession session) {
-        session.invalidate();
+        userService.logout(session);
     }
 
     //显示所有普通用户
@@ -101,29 +102,29 @@ public class UserController {
     }
 
     @PostMapping("/deleteRegularUserById")
-    public void deleteRegularUserById(@RequestParam int id) {
-        userService.deleteRegularUserById(id);
+    public void deleteRegularUserById(@RequestParam int id, HttpSession session) {
+        userService.deleteRegularUserById(session, id);
     }
 
     @PostMapping("/deleteAdminById")
     public String deleteAdminById(@RequestParam int id, HttpSession session) {
         if (session.getAttribute("id").equals(String.valueOf(id))) return "false";
-        userService.deleteAdminById(id);
+        userService.deleteAdminById(session, id);
         return "true";
     }
 
     @PostMapping("/updateAdminPassword")
-    public Admin updateAdminPassword(@RequestParam int id, @RequestParam String password) {
+    public Admin updateAdminPassword(HttpSession session, @RequestParam int id, @RequestParam String password) {
         Admin admin = userService.findAdminById(id);
         admin.setPassword(password);
-        return userService.saveAdmin(null, admin);
+        return userService.saveAdmin(session, admin);
     }
 
     @PostMapping("/updateRegularUserPassword")
-    public RegularUser updateRegularUserPassword(@RequestParam int id, @RequestParam String password) {
+    public RegularUser updateRegularUserPassword(HttpSession session, @RequestParam int id, @RequestParam String password) {
         RegularUser regularUser = userService.findRegularUserById(id);
         regularUser.setPassword(password);
-        return userService.saveRegularUser(null, regularUser);
+        return userService.saveRegularUser(session, regularUser);
     }
 
 
