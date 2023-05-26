@@ -121,9 +121,12 @@ public class ArticleService {
     }
 
     //按文章名称模糊查询所有用户的文章
-    public List<Article> listArticleByTitle(String keyword) {
-        return articleRepository.findByArticleTitleLike("%" + keyword + "%");
+    public JSONArray listArticleByTitle(String keyword) {
+        List<Article> articleList = articleRepository.findByArticleTitleLike("%" + keyword + "%");
+        if (articleList == null) return null;
+        return formatArticleList(articleList);
     }
+
 
     //更新或新建文章
     public Article saveArticle(int userId, String userType,

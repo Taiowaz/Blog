@@ -1,5 +1,6 @@
 package top.canoe0.blog.service;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,9 @@ import top.canoe0.blog.repository.RegularUserRepository;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 //todo 普通用户头像保存有问题
 //todo 注册时间有问题
@@ -211,5 +214,46 @@ public class UserService {
     public void deleteRegularUserById(int id) {
         System.out.println("id = " + id);
         regularUserRepository.deleteRegularUserById(id);
+    }
+
+    //通过账户或描述信息模糊查询用户
+    public JSONArray getRegularUserByAccountOrDetail(String keyword) {
+        Set<RegularUser> regularUserSet = new HashSet<>();
+        List<RegularUser> likeAccountList = regularUserRepository.findRegularUserByAccountLike("%" + keyword + "%");
+        List<RegularUser> likeDetailList = regularUserRepository.findRegularUserByDetailLike("%" + keyword + "%");
+        if (likeAccountList != null) {
+            regularUserSet.addAll(likeAccountList);
+        }
+        if (likeDetailList != null) {
+            regularUserSet.addAll(likeDetailList);
+        }
+
+        JSONArray regularUserJSONArray = new JSONArray();
+
+        for (RegularUser regularUser : regularUserSet) {
+            JSONObject regularUserJSON = new JSONObject();
+            regularUserJSON.put("avatarUrl", regularUser.getAvatarUrl());
+            regularUserJSON.put("account", regularUser.getAccount());
+            String gender = regularUser.getGender();
+            if (gender == null) {
+                regularUserJSON.put("gender", "暂未设置");
+            } else if (gender.equals("male")) {
+                regularUserJSON.put("gender", "男");
+            } else {
+                regularUserJSON.put("gender", "女");
+            }
+            if (regularUser.getDetail() == null) {
+                regularUserJSON.put("detail", "");
+            } else {
+                regularUserJSON.put("detail", regularUser.getDetail());
+            }
+            regularUserJSONArray.add(regularUserJSON);
+        }
+
+        if (regularUserJSONArray.isEmpty()) {
+            return null;
+        } else {
+            return regularUserJSONArray;
+        }
     }
 }

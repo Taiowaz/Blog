@@ -75,7 +75,7 @@ function btnUserListOrLogListClickEvent() {
         url: '/getSession',
         type: 'get',
         success: function (res) {
-            console.log("res " + res);
+            console.log("res " + res.userType);
             if (res == null || res == '') {
                 window.location.href = "/loginRegister";
             } else {
@@ -87,6 +87,14 @@ function btnUserListOrLogListClickEvent() {
             }
         }
     })
+}
+
+//搜索按钮点击事件
+function btnSearchEvent() {
+    var keyword = $("#search_input").val();
+    if (keyword.trim() !== "") {
+        window.location.href = "/search?keyword=" + keyword;
+    }
 }
 
 $(function () {
@@ -109,5 +117,7 @@ $(function () {
 
     $(".user_list").click(btnUserListOrLogListClickEvent);
 
-    $(".log_list").click(btnUserListOrLogListClickEvent)
+    $(".log_list").click(btnUserListOrLogListClickEvent);
+
+    $(".btn_search").click(btnSearchEvent);
 })

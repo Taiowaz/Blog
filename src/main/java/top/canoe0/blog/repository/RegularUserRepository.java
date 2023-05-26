@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 import top.canoe0.blog.entity.user.RegularUser;
 
+import java.util.List;
+
 public interface RegularUserRepository extends JpaRepository<RegularUser, Integer> {
     RegularUser findRegularUserByAccount(String account);
 
@@ -13,5 +15,10 @@ public interface RegularUserRepository extends JpaRepository<RegularUser, Intege
     @Modifying
     @Transactional
     void deleteRegularUserById(int id);
+
+
+    List<RegularUser> findRegularUserByAccountLike(String keyword);
+
+    List<RegularUser> findRegularUserByDetailLike(String keyword);
 
 }
