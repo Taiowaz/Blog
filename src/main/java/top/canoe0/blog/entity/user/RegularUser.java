@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-//每个类单独一张表，字段都有
 public class RegularUser extends User {
     private String name;
     private String gender;

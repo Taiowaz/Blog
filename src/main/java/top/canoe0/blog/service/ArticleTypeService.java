@@ -12,17 +12,13 @@ public class ArticleTypeService {
     @Autowired
     private ArticleTypeRepository articleTypeRepository;
 
+    //添加或更新文章类型
     public ArticleType saveArticleType(ArticleType articleType) {
         if (articleTypeRepository.findArticleTypeByArticleTypeName(articleType.getArticleTypeName()) != null) {
             return null;
         }
         return articleTypeRepository.save(articleType);
     }
-
-    public List<ArticleType> listAllArticleType() {
-        return articleTypeRepository.findAll();
-    }
-
 
     //删除文章类型
     public String deleteArticleTypeById(int articleTypeId) {

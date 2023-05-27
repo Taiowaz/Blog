@@ -36,11 +36,19 @@ function initUserInfoBtn() {
         type: 'get',
         success: function (res) {
             if (res != null && res != '') {
+                $(".account").show();
+                $(".avatar").show();
+                $(".tip").hide();
+
                 if (res.avatar !== null && res.avatarUrl !== ""
                     && res.avatarUrl !== undefined && res.avatarUrl != "null") {
                     $(".avatar").attr("src", res.avatarUrl);
                 }
                 $(".account").text(res.account);
+            } else {
+                $(".tip").show();
+                $(".account").hide();
+                $(".avatar").hide();
             }
         }
     })
@@ -96,6 +104,7 @@ function btnSearchEvent() {
         window.location.href = "/search?keyword=" + keyword;
     }
 }
+
 
 $(function () {
 

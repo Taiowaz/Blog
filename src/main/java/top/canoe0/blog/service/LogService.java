@@ -34,6 +34,7 @@ public class LogService {
         return formatLoginLogList(loginLogList, null);
     }
 
+    //转换成前端接收的格式
     public JSONArray formatLoginLogList(List<LoginLog> loginLogList, List<OperateLog> operateLogList) {
 
         JSONArray logJSONArray = new JSONArray();

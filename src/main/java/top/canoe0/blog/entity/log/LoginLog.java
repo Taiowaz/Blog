@@ -6,7 +6,6 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "logId")
 @Entity
 @Data
 public class LoginLog extends Log {

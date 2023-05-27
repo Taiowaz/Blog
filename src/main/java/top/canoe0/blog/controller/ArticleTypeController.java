@@ -15,13 +15,10 @@ public class ArticleTypeController {
     @Autowired
     private ArticleTypeService articleTypeService;
 
-    @GetMapping("/listAllArticleType")
-    public List<ArticleType> listAllArticleType() {
-        return articleTypeService.listAllArticleType();
-    }
 
     @PostMapping("/addArticleType")
-    public ArticleType addArticleType(int userId, String userType, int articleTypeId, String articleTypeName) {
+    public ArticleType addArticleType(int userId, String userType, int articleTypeId,
+                                      String articleTypeName) {
         ArticleType articleType = new ArticleType();
         if (articleTypeId != 0) {
             articleType.setArticleTypeId(articleTypeId);

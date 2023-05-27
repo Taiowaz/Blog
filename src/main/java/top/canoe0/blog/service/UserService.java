@@ -36,7 +36,7 @@ public class UserService {
     private CommentRepository commentRepository;
 
 
-    //session
+    //获取session信息
     public JSONObject getSession(HttpSession session) throws Exception {
         String id = (String) session.getAttribute("id");
         String account = (String) session.getAttribute("account");
@@ -56,7 +56,7 @@ public class UserService {
         return sessionJSON;
     }
 
-    //设置session
+    //设置session信息
     public void setSession(HttpSession session, String id, String account, String avatarUrl, String userType) {
         if (session != null) {
             session.setAttribute("id", id);
@@ -200,7 +200,8 @@ public class UserService {
 
         if (adminDB.getPassword().equals(admin.getPassword())) {
             //设置session
-            this.setSession(session, String.valueOf(adminDB.getId()), adminDB.getAccount(), adminDB.getAvatarUrl(), "admin");
+            this.setSession(session, String.valueOf(adminDB.getId()), adminDB.getAccount(),
+                    adminDB.getAvatarUrl(), "admin");
             LoginLog loginLog = new LoginLog();
             loginLog.setUserId(adminDB.getId());
             loginLog.setUserType("admin");
@@ -213,6 +214,7 @@ public class UserService {
             loginLog.setUserId(adminDB.getId());
             loginLog.setUserType("admin");
             loginLog.setLoginStatus("登录失败");
+            logService.saveLoginLog(loginLog);
             //登录失败情况下一定不要把数据库查询用户返回
             return null;
         }
@@ -239,6 +241,7 @@ public class UserService {
             loginLog.setUserId(regularUserDB.getId());
             loginLog.setUserType("regularUser");
             loginLog.setLoginStatus("登录失败");
+            logService.saveLoginLog(loginLog);
             return null;
         }
 
@@ -270,7 +273,8 @@ public class UserService {
     public void deleteRegularUserById(HttpSession session, int id) {
         int operateAdminId = Integer.valueOf((String) session.getAttribute("id"));
         RegularUser regularUser = findRegularUserById(id);
-        String operateType = "[" + session.getAttribute("account") + "]删除了普通用户[" + regularUser.getAccount() + "]";
+        String operateType = "[" + session.getAttribute("account") + "]删除了普通用户[" +
+                regularUser.getAccount() + "]";
         logService.saveOperateLog(operateAdminId, operateType);
 
         //删除其文章
@@ -288,8 +292,10 @@ public class UserService {
     //通过账户或描述信息模糊查询用户
     public JSONArray getRegularUserByAccountOrDetail(String keyword) {
         Set<RegularUser> regularUserSet = new HashSet<>();
-        List<RegularUser> likeAccountList = regularUserRepository.findRegularUserByAccountLike("%" + keyword + "%");
-        List<RegularUser> likeDetailList = regularUserRepository.findRegularUserByDetailLike("%" + keyword + "%");
+        List<RegularUser> likeAccountList = regularUserRepository.
+                findRegularUserByAccountLike("%" + keyword + "%");
+        List<RegularUser> likeDetailList = regularUserRepository.
+                findRegularUserByDetailLike("%" + keyword + "%");
         if (likeAccountList != null) {
             regularUserSet.addAll(likeAccountList);
         }
@@ -326,7 +332,7 @@ public class UserService {
         }
     }
 
-
+    //注销
     public void logout(HttpSession session) {
         LoginLog loginLog = new LoginLog();
         loginLog.setUserId(Integer.valueOf((String) session.getAttribute("id")));

@@ -71,7 +71,6 @@ public class UserController {
     public Admin updateAdmin(HttpSession session, @RequestBody Admin admin) {
         return userService.saveAdmin(session, admin);
     }
-
     //todo 登录与注册代码可优化
 
     //登录管理员用户
@@ -84,7 +83,8 @@ public class UserController {
     }
 
     @PostMapping("/loginRegularUser")
-    public RegularUser loginRegularUser(@RequestParam String account, @RequestParam String password, HttpSession session) {
+    public RegularUser loginRegularUser(@RequestParam String account,
+                                        @RequestParam String password, HttpSession session) {
         RegularUser regularUser = new RegularUser();
         regularUser.setAccount(account);
         regularUser.setPassword(password);
@@ -121,7 +121,8 @@ public class UserController {
     }
 
     @PostMapping("/updateRegularUserPassword")
-    public RegularUser updateRegularUserPassword(HttpSession session, @RequestParam int id, @RequestParam String password) {
+    public RegularUser updateRegularUserPassword(HttpSession session, @RequestParam int id,
+                                                 @RequestParam String password) {
         RegularUser regularUser = userService.findRegularUserById(id);
         regularUser.setPassword(password);
         return userService.saveRegularUser(session, regularUser);
